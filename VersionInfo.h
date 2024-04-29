@@ -9,15 +9,15 @@
 #define STRINGIZE2(s) #s
 #define STRINGIZE(s) STRINGIZE2(s)
 
-#define VERSION_MAJOR               11
+#define VERSION_MAJOR               0
 #define VERSION_MINOR               1
 
 #define VER_COMPANYNAME_STR				"Imitation Camel"
 
 #if defined(CSE)
-	#define VER_FILE_DESCRIPTION_STR    "A plugin for the Oblivion Script Extender"
+	#define VER_FILE_DESCRIPTION_STR    "A plugin for the Fallout New Vegas Script Extender"
 #else
-	#define VER_FILE_DESCRIPTION_STR    "A component of the Construction Set Extender"
+	#define VER_FILE_DESCRIPTION_STR    "A component of the GECK Extender"
 #endif
 
 #define VER_FILE_VERSION            VERSION_MAJOR, VERSION_MINOR, VERSION_REVISION, VERSION_BUILD
@@ -27,17 +27,17 @@
 									"." STRINGIZE(VERSION_BUILD)    \
 
 #if defined(CSE)
-	#define VER_PRODUCTNAME_STR         "Construction Set Extender"
+	#define VER_PRODUCTNAME_STR         "GECK Extender"
 #elif defined(CSE_SE)
-	#define VER_PRODUCTNAME_STR         "Construction Set Extender Script Editor"
+	#define VER_PRODUCTNAME_STR         "GECK Extender Script Editor"
 #elif defined(CSE_BSAVIEWER)
-	#define VER_PRODUCTNAME_STR         "Construction Set Extender BSA Viewer"
+	#define VER_PRODUCTNAME_STR         "GECK Extender BSA Viewer"
 #elif defined(CSE_LIPSYNC)
-	#define VER_PRODUCTNAME_STR         "Construction Set Extender Lip Sync Interop Client"
+	#define VER_PRODUCTNAME_STR         "GECK Extender Lip Sync Interop Client"
 #elif defined(CSE_TAGBROWSER)
-	#define VER_PRODUCTNAME_STR         "Construction Set Extender Tag Browser"
+	#define VER_PRODUCTNAME_STR         "GECK Extender Tag Browser"
 #elif defined(CSE_USEINFOLIST)
-	#define VER_PRODUCTNAME_STR         "Construction Set Extender Centralized Use Info Listing"
+	#define VER_PRODUCTNAME_STR         "GECK Extender Centralized Use Info Listing"
 #else
 	#define VER_PRODUCTNAME_STR         "<Unknown>"
 #endif
@@ -46,7 +46,7 @@
 #define VER_PRODUCT_VERSION_STR     VER_FILE_VERSION_STR
 
 #if defined(CSE)
-	#define VER_ORIGINAL_FILENAME		"Construction Set Extender"
+	#define VER_ORIGINAL_FILENAME		"GECK Extender"
 #elif defined(CSE_SE)
 	#define VER_ORIGINAL_FILENAME       "ScriptEditor"
 #elif defined(CSE_BSAVIEWER)
@@ -63,7 +63,7 @@
 #define VER_ORIGINAL_FILENAME_STR	VER_ORIGINAL_FILENAME ".dll"
 #define VER_INTERNAL_NAME_STR       VER_ORIGINAL_FILENAME
 
-#define VER_COPYRIGHT_STR           "Copyright shadeMe (C) 2010"
+#define VER_COPYRIGHT_STR           "Copyright shadeMe (C) 2024"
 
 #ifdef _DEBUG
   #define VER_VER_DEBUG             VS_FF_DEBUG

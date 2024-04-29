@@ -1,9 +1,9 @@
 #include "Script.h"
 #include "Hooks\Hooks-ScriptEditor.h"
 
-using namespace cse;
+using namespace gecke;
 
-TESScriptCompiler::_ShowMessage			TESScriptCompiler::ShowMessage = (TESScriptCompiler::_ShowMessage)0x004FFF40;
+TESScriptCompiler::_ShowMessage			TESScriptCompiler::ShowMessage = (TESScriptCompiler::_ShowMessage)0x005C5730;
 bool									TESScriptCompiler::PreventErrorDetours = false;
 bool									TESScriptCompiler::PrintErrorsToConsole = true;
 TESScriptCompiler::CompilerMessageArrayT	TESScriptCompiler::LastCompilationMessages;
@@ -43,20 +43,16 @@ bool Script::Compile(bool AsResultScript)
 	if (this->text == nullptr)
 		return false;
 
-	if (AsResultScript)
-		return thisCall<bool>(0x005034E0, 0x00A0B128, this, 0, 0);
+	if (AsResultScript) {
+		NOT_IMPLEMENTED;
+	}
 	else
-		return thisCall<bool>(0x00503450, 0x00A0B128, this, 0);
+		return thisCall<bool>(0x005C9800, 0x00ECFDF8, this, 0);
 }
 
 void Script::SetText(const char* Text)
 {
-	thisCall<UInt32>(0x004FC6C0, this, Text);
-}
-
-UInt32 Script::GetScriptableFormUseCount( void )
-{
-	return thisCall<UInt32>(0x004FC190, this);
+	thisCall<UInt32>(0x005C27B0, this, Text);
 }
 
 bool Script::IsObjectScript() const
@@ -76,6 +72,9 @@ bool Script::IsMagicScript() const
 
 bool Script::IsUserDefinedFunctionScript() const
 {
+	// TODO : fix for NVSE
+	return false;
+
 	if (!IsObjectScript())
 		return false;
 	else if (info.dataLength < 15)
@@ -101,52 +100,19 @@ void TESScriptCompiler::ToggleScriptCompilation( bool State )
 		hooks::_MemHdlr(ToggleScriptCompilingOriginalData).WriteBuffer();
 }
 
-UInt32 Script::GetEffectItemReferences(ScriptMagicItemCrossRefArrayT& OutList)
-{
-	OutList.clear();
-
-	for (cseOverride::NiTMapIterator Itr = TESForm::FormIDMap->GetFirstPos(); Itr;)
-	{
-		UInt32 FormID = 0;
-		TESForm* Form = nullptr;
-
-		TESForm::FormIDMap->GetNext(Itr, FormID, Form);
-		if (FormID && Form)
-		{
-			if (Form->formType == TESForm::kFormType_SigilStone ||
-				Form->formType == TESForm::kFormType_Enchantment ||
-				Form->formType == TESForm::kFormType_AlchemyItem ||
-				Form->formType == TESForm::kFormType_Spell)
-			{
-				MagicItem* Item = CS_CAST(Form, TESForm, MagicItem);
-				if (Item)
-				{
-					for (EffectItemList::EffectItemListT::Iterator Itr = Item->effects.Begin(); Itr.Get() && !Itr.End(); ++Itr)
-					{
-						EffectItem* Current = Itr.Get();
-						if (Current->scriptInfo && Current->scriptInfo->scriptFormID == this->formID)
-							OutList.push_back(Form);
-					}
-				}
-			}
-		}
-	}
-
-	return OutList.size();
-}
 
 void Script::RemoveCompiledData(void)
 {
-	FormHeap_Free(data);
+	gecke_overrides::FormHeap_Free(data);
 	data = nullptr;
 
 	info.dataLength = 0;
 	info.lastVarIdx = 0;
 	info.refCount = 0;
-	compileResult = 0;
+	info.compileResult = 0;
 
-	thisCall<void>(0x004FF830, this);		// cleanup ref var list
-	thisCall<void>(0x004FF7D0, this);		// cleanup var list
+	thisCall<void>(0x005C4F40, this);		// cleanup ref var list
+	thisCall<void>(0x005C4EC0, this);		// cleanup var list
 }
 
 TESScriptCompiler::CompilerMessage::CompilerMessage(UInt32 Line, const char* Message)

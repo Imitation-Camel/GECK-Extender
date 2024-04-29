@@ -158,15 +158,15 @@ IntelliSenseItemScriptCommand::IntelliSenseItemScriptCommand(componentDLLInterfa
 		auto SourceObsePlugin = CommandTableData->GetParentPlugin(CommandInfo);
 		if (SourceObsePlugin)
 		{
-			CommandSource = eSourceType::OBSEPlugin;
+			CommandSource = eSourceType::NVSEPlugin;
 			CommandSourceName = GetPrettyNameForObsePlugin(gcnew String(SourceObsePlugin->name));
 			CommandSourceVersion = SourceObsePlugin->version;
 		}
 		else
 		{
-			CommandSource = eSourceType::OBSE;
+			CommandSource = eSourceType::NVSE;
 			CommandSourceName = "OBSE";
-			CommandSourceVersion = CommandTableData->GetRequiredOBSEVersion(CommandInfo);
+			CommandSourceVersion = CommandTableData->GetRequiredNVSEVersion(CommandInfo);
 		}
 	}
 
@@ -342,7 +342,7 @@ IntelliSenseItemScriptCommand::IntelliSenseItemScriptCommand(componentDLLInterfa
 			->Text("Links:")->NonBreakingSpace(2)
 				->Hyperlink(WikiUrl)->Text("Wiki")->PopTag();
 
-	if (Source == eSourceType::OBSE)
+	if (Source == eSourceType::NVSE)
 	{
 		String^ ObseCommandDocUrl = "https://htmlpreview.github.io/?https://github.com/llde/xOBSE/blob/master/obse_command_doc.html#" + Name;
 		Sb->Text(" | ")->Hyperlink(ObseCommandDocUrl)->Text("OBSE")->PopTag();

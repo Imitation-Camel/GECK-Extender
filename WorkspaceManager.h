@@ -1,7 +1,7 @@
 #pragma once
 #include "[BGSEEBase]\WorkspaceManager.h"
 
-namespace cse
+namespace gecke
 {
 	namespace workspaceManager
 	{

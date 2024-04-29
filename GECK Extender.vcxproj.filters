@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{c6a778f0-4c40-4578-a7ec-afd3011e9cf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{1a7ea9be-abe3-4741-9f93-2e47e8b79113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Coda">
+      <UniqueIdentifier>{af596679-11c5-4c5b-b06e-d480fdd6aec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\IMGUI">
+      <UniqueIdentifier>{a50958c2-465f-4ce6-8e27-0b240b60cb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\UI Manager">
+      <UniqueIdentifier>{5463e2e4-4e73-45e5-8fb6-6282d891f962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorAPI">
+      <UniqueIdentifier>{d0d017c4-83bc-4ecf-9339-01402c1623a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hooks">
+      <UniqueIdentifier>{02202516-2285-4254-a369-410fe061c455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NVSE">
+      <UniqueIdentifier>{783b5fe2-b7cb-4fe9-bd30-97f65eccbf2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interop">
+      <UniqueIdentifier>{8e6b0c23-25c1-45f2-ae34-a7bae9bb83df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{73f65124-f5a2-419b-a861-81195ae1ed86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wrappers">
+      <UniqueIdentifier>{ca9c0f83-9943-47d3-b980-68c7a200a7d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\IMGUI\Fonts">
+      <UniqueIdentifier>{0b002300-011c-44f3-8031-dc11cbfe9df3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EditorAPI\BSString.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\Core.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\Crt.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\RTTI.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\Script.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\TESDialog.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\TESForm.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="[Common]\HandshakeStructs.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="[Common]\CLIWrapper.cpp">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\Hooks-Common.cpp">
+      <Filter>Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\Hooks-CompilerErrorDetours.cpp">
+      <Filter>Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\Hooks-Misc.cpp">
+      <Filter>Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\Hooks-ScriptEditor.cpp">
+      <Filter>Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Coda\Coda.cpp">
+      <Filter>Components\Coda</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui.cpp">
+      <Filter>Components\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_draw.cpp">
+      <Filter>Components\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>Components\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_widgets.cpp">
+      <Filter>Components\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindowOverrides.cpp">
+      <Filter>Components\UI Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Components\UI Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Exports.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="Console.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EventSinks.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EventSources.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\TESObjectREFR.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkspaceManager.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\TESFile.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\MemoryHeap.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorAPI\TESRender.cpp">
+      <Filter>EditorAPI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EditorAPI\BaseFormComponent.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\BSString.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\Core.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\Crt.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\RTTI.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\Script.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\TESDialog.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\TESEditorAPI.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\TESForm.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="GECK Extender_Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="VersionInfo.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="[BGSEEBase]\BGSEditorExtenderBase_Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\SME Sundries\INIEditGUI_Res.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="[Common]\HandShakeStructs.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="[Common]\ComponentDLLInterface.h">
+      <Filter>Interop</Filter>
+    </ClInclude>
+    <ClInclude Include="[Common]\CLIWrapper.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\Hooks-Common.h">
+      <Filter>Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\Hooks-CompilerErrorDetours.h">
+      <Filter>Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\Hooks-Misc.h">
+      <Filter>Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\Hooks-ScriptEditor.h">
+      <Filter>Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Coda\Coda.h">
+      <Filter>Components\Coda</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imconfig.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_internal.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_user.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_rectpack.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_textedit.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_truetype.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\stb_sprintf.h">
+      <Filter>Components\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IconFontCppHeaders\IconsFontAwesome.h">
+      <Filter>Components\IMGUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="IconFontCppHeaders\IconsKenney.h">
+      <Filter>Components\IMGUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="IconFontCppHeaders\IconsMaterialDesign.h">
+      <Filter>Components\IMGUI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWindowOverrides.h">
+      <Filter>Components\UI Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Components\UI Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Exports.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Console.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EventSinks.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EventSources.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\NiNodes.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\NiObjects.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\NiPoint.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\NiTypes.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\PluginAPI.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\TESObjectREFR.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkspaceManager.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\GameTypes.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NVSE\nvse\nvse\containers.h">
+      <Filter>NVSE</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\ExtraDataList.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\ExtraData.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\TESFile.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\MemoryHeap.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorAPI\TESRender.h">
+      <Filter>EditorAPI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GECK Extender.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="VersionInfo.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="[BGSEEBase]\BGSEditorExtenderBase.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="..\..\Libraries\SME Sundries\INIEditGUI_Res.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

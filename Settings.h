@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cse
+namespace gecke
 {
 	namespace settings
 	{

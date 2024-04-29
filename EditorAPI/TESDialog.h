@@ -1,7 +1,5 @@
 #pragma once
 
-#include "TESTopicInfo.h"
-
 //	EditorAPI: TESDialog and related classes.
 //	A number of class definitions are directly derived from the COEF API; Credit to JRoush for his comprehensive decoding
 
@@ -27,6 +25,13 @@ class	BSExtraData;
 class	TESBoundObject;
 class	TESPreviewControl;
 class	BaseExtraList;
+class	DialogResponse;
+class	TESTopicInfo;
+class	TESTopic;
+class	TESWorldSpace;
+class	TESObjectSTAT;
+class	TESObjectCELL;
+
 
 // FormEditParam - for form-editing dialogs.
 // passed as initParam to CreateDialogParam() (i.e. lParam on WM_INITDIALOG message) for form-editing dialogs
@@ -38,10 +43,6 @@ public:
 	/*01*/ UInt8		pad01[3];
 	/*04*/ TESForm*		form;
 	/*08*/ UInt32		unk08;				// never initialized or accessed
-
-	FormEditParam(const char* EditorID);
-	FormEditParam(UInt32 FormID);
-	FormEditParam(TESForm* Form);
 };
 STATIC_ASSERT(sizeof(FormEditParam) == 0xC);
 
@@ -67,38 +68,6 @@ public:
 };
 STATIC_ASSERT(sizeof(Subwindow) == 0x20);
 
-// 2C
-class ResponseEditorData
-{
-public:
-	struct VoiceRecorderData
-	{
-		/*00*/ HWND			recorderDlg;
-	};
-
-	typedef tList<TESRace>			VoicedRaceListT;
-
-	/*00*/ const char*				editorTitle;
-	/*04*/ UInt32					maxResponseLength;
-	/*08*/ DialogResponse*			selectedResponse;
-	/*0C*/ DialogResponse*			responseLocalCopy;
-	/*10*/ VoiceRecorderData*		recorderData;
-	/*14*/ TESTopic*				parentTopic;
-	/*18*/ TESTopicInfo*			infoLocalCopy;
-	/*1C*/ TESTopicInfo*			selectedInfo;
-	/*20*/ TESQuest*				selectedQuest;
-	/*24*/ VoicedRaceListT			voicedRaces;
-
-	static ResponseEditorData**		EditorCache;				// accessed by the response editor dlg and set by the last opened one
-
-	enum
-	{
-		kVoiceFileListView = 2168,
-		kGenerateLIPFileButton = 1016,
-		kCopyExternalFileButton = 2223,
-	};
-};
-STATIC_ASSERT(sizeof(ResponseEditorData) == 0x2C);
 
 // 12C
 class ScriptEditorData
@@ -154,25 +123,6 @@ enum
 	kFindTextTextBox_Query = 1000,
 };
 
-// 18
-class SelectTopicWindowData
-{
-public:
-	typedef tList<TESTopic>				TopicListT;
-
-	// members
-	/*00*/ TopicListT					selectedTopics;		// topics selected in the window are added to this list
-	/*08*/ TESQuest*					currentQuest;
-	/*0C*/ TESTopicInfo*				currentTopicInfo;
-	/*10*/ UInt32						topicType;
-	/*14*/ UInt32						triggerCtrlID;		// ID of the list view that invoked the window
-
-	static SelectTopicWindowData**		Singleton;
-
-	// method
-	void								RefreshListView(HWND Dialog);
-};
-STATIC_ASSERT(sizeof(SelectTopicWindowData) == 0x18);
 
 // 10
 class SelectQuestWindowData
@@ -290,21 +240,6 @@ enum
 
 	kFaceGenControl_AdvancedParamsListView = 1020,
 };
-
-class DataDialog
-{
-public:
-	enum
-	{
-		kCtrlId_PluginFileList = 1056,
-		kCtrlId_ParentMasterFileList = 1057,
-	};
-
-	static TESFile**				ActivePlugin;
-	static TESFile**				CurrentSelection;
-};
-
-
 
 enum
 {
@@ -530,168 +465,26 @@ public:
 		kWindowMessage_Refresh = 0x41A,
 	};
 
-	// methods
+	
+	static void								ShowScriptEditorDialog(TESForm* InitScript);
 	static UInt32							WriteBoundsToINI(HWND Handle, const char* WindowClassName);
 	static bool								ReadBoundsFromINI(const char* WindowClassName, LPRECT OutRect);
-
-	static UInt32							GetDialogTemplateForFormType(UInt8 FormTypeID);
-	static BSExtraData*						GetDialogExtraByType(HWND Dialog, UInt16 Type);
-	static TESForm*							GetDialogExtraParam(HWND Dialog);
-	static TESForm*							GetDialogExtraLocalCopy(HWND Dialog);
-	static bool								GetIsWindowDragDropRecipient(UInt16 FormType, HWND hWnd);
-
-	static DLGPROC							GetFormEditDlgProc(TESForm* Form, bool& FormIDListViewForm);
-	static bool								CallFormDialogMessageCallback(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LONG* outLong);
-	static HWND								GetActiveFormEditDialog(TESForm* Form);
-
-	static bool								SelectTESFileCommonDialog(HWND Parent, const char* SaveDir, bool SaveAsESM, char* FileNameOut, size_t OutSize);
-	static HWND								ShowFormEditDialog(TESForm* Form);
-	static void								ShowScriptEditorDialog(TESForm* InitScript);
-	static HWND								ShowUseReportDialog(TESForm* Form);
-
-	static void								ResetFormListControls();
-
-	static float							GetDlgItemFloat(HWND Dialog, int ID);
-	static void								SetDlgItemFloat(HWND Dialog, int ID, float Value, int DecimalPlaces);
-	static void								ClampDlgEditField(HWND EditControl, float Min, float Max, bool NoDecimals = false, UInt32 DecimalPlaces = 2);
-
-	static void								ShowDialogPopupMenu(HMENU Menu, POINT* Coords, HWND Parent, LPARAM Data = NULL);
-	static BaseExtraList*					GetDialogExtraDataList(HWND Dialog);
-	static BaseExtraList*					CreateDialogExtraDataList(HWND Dialog);
-	static void								DestroyDialogExtraDataList(HWND Dialog);
-
-	static void								AddDialogToOpenList(HWND Dialog);
-	static void								RemoveDialogFromOpenList(HWND Dialog);
-
-	// Display an open/save file dialog.  relativePath is relative to Oblivion/ directory
-	// returns false if canceled, or selected file is invalid
-	static bool								ShowFileSelect(HWND parent, const char* relativePath, const char* filter,
-												const char* title, const char* defaultExtension, LPOFNHOOKPROC proc,
-												bool fileMustExist, bool saveVsOpen, char* filenameBuffer, UInt32 bufferSize);
-
-	static tList<HWND>*						OpenDialogWindows;
-
-	static UInt8*							ObjectWindowDragDropInProgress;
-	static UInt8*							TESFormIDListViewDragDropInProgress;
-	static bool								PackageCellDragDropInProgress;
-
-	static void*							LandscapeTextureSortComparator;
 };
 
-class TESComboBox
-{
-public:
-	// methods
-	static void								AddItem(HWND hWnd, const char* Text, void* Data, bool ResizeDroppedWidth = true);
-	static void*							GetSelectedItemData(HWND hWnd);
-	static void								SetSelectedItemByData(HWND hWnd, void* Data);
-	static void								SetSelectedItemByIndex(HWND hWnd, UInt32 Index);
-
-	static void								PopulateWithForms(HWND hWnd, UInt8 FormType, bool ClearItems, bool AddDefaultItem);
-	static void								ClearItems(HWND hWnd);
-};
-
-class TESListView
-{
-public:
-	// methods
-	static void								SetSelectedItem(HWND hWnd, int Index);
-	static void*							GetSelectedItemData(HWND hWnd);
-	static void*							GetItemData(HWND hWnd, int Index);
-	static int								GetItemByData(HWND hWnd, void* Data);
-	static void								ScrollToItem(HWND hWnd, int Index);
-	static void								InsertItem(HWND hWnd, void* Data, bool ImageCallback = false, int Index = -1);
-	static UInt32							GetSelectedItemCount(HWND hWnd);
-
-	static void								AddColumnHeader(HWND hWnd, int Index, const char* Name, int Width, UInt32 Format = LVCFMT_LEFT);
-	static void								ClearColumnHeaders(HWND hWnd);
-	static void								ClearItems(HWND hWnd);
-	static int								GetColumnCount(HWND hWnd);
-};
-
-class TESTreeView
-{
-public:
-	// methods
-	static void*							GetItemData(HWND hWnd, HTREEITEM Item);
-};
-
-class TESTabControl
-{
-public:
-	enum
-	{
-		kTabControl = 1777,
-	};
-};
-
-class TESPreviewWindow
-{
-public:
-	static void								Display(TESBoundObject* Object);
-
-	// methods
-	static void								SetSourceObject(TESBoundObject* Object);
-
-	static void								HandleResize(HWND PreviewWindow);
-	static void								Initialize(HWND PreviewWindow);
-	static void								Deinitialize(HWND PreviewWindow);
-
-	static HWND*							WindowHandle;
-	static HWND*							AnimationListHandle;
-	static TESPreviewControl**				PreviewControl;
-	static DWORD*							InitialTickCount;
-	static TESObjectREFR**					PreviewRef;
-	static TESObjectSTAT**					PreviewStatic;
-
-	static DLGPROC							DialogProc;
-
-	enum
-	{
-		kAnimListCtrlID = 2408,
-	};
-};
 
 // container class, arbitrarily named
 class TESCSMain
 {
 public:
-	static LRESULT							WriteToStatusBar(int PanelIndex, const char* Message);
-
 	static void								InitializeCSWindows();
 	static void								DeinitializeCSWindows();
-	static void		 						SetTitleModified(bool State);
-	static void								AutoSave();								// should probably be in TES/TESDataHandler
-	static void								InvokeMainMenuTool(int Identifier);		// works with toolbar items too
-	static bool								ConfirmUnsavedChanges();				// returns false if the confirmation was canceled or if the save operation failed
+	static std::string						GetINIFilePath();
+
 
 	static HINSTANCE*						Instance;
 	static HWND*							WindowHandle;
-	static HWND*							MainToolbarHandle;
 	static HMENU*							MainMenuHandle;
-
-	static char**							ActivePluginNameBuffer;
-	static UInt8*							AllowAutoSaveFlag;
-	static UInt8*							ExittingCSFlag;
-	static UInt8*							UnsavedChangesFlag;
-
-	static const char*						INIFilePath;
-	static HIMAGELIST*						BoundObjectIcons;
-	static char**							FileSelectionBuffer;
-	static char*							ProfileFolderPath;
-
-	enum
-	{
-		kMainMenu_World_EditCellPathGrid = 40194,
-		kMainMenu_View_PreviewWindow = 40121,
-		kMainMenu_Help_Contents = 40157,
-		kMainMenu_Character_ExportDialogue = 40413,
-		kMainMenu_View_CellViewWindow = 40200,
-		kMainMenu_View_RenderWindow = 40423,
-		kMainMenu_View_ObjectWindow = 40199,
-		kMainMenu_View_Sky = 40223,
-		kMainMenu_Edit_SearchReplace = 40179,
-	};
+	static const char*						INIFileParentFolder;
 
 	enum
 	{
@@ -710,356 +503,20 @@ public:
 class TESObjectWindow
 {
 public:
-	enum
-	{
-		kWindowMessage_Reload = 0x412,
-	};
-
-
-	// 14
-	class TreeEntryInfo
-	{
-	public:
-		typedef tList<TESForm> FormListT;
-
-		// members
-		/*00*/ UInt8         formType;           // form type for this tree entry
-		/*01*/ UInt8         pad01[3];
-		/*04*/ UInt32        columnCount;        // number of columns in listview
-		/*08*/ UInt32        selectedIndex;      // index of currently selected item in listview (??)
-		/*0C*/ FormListT     formList;
-
-
-		void ListViewGetDispInfoCallback(NMLVDISPINFO* Data);
-
-		static const UInt32		kTreeEntryCount = 0x24; // size of static tree entry arrays
-	};
-	STATIC_ASSERT(sizeof(TreeEntryInfo) == 0x14);
-
-	// 210
-	struct TreeViewItemData
-	{
-		enum
-		{
-			kGroup_Actors = 0,
-			kGroup_Items,
-			kGroup_Magic,
-			kGroup_WorldObjects,
-			kGroup_Miscellaneous,
-
-			kGroup__MAX
-		};
-
-		enum
-		{
-			kType_Activator = 0,
-			kType_Apparatus,
-			kType_Armor,
-			kType_Book,
-			kType_Clothing,
-			kType_Container,
-			kType_Door,
-			kType_Ingredient,
-			kType_Light,
-			kType_MiscItem,
-			kType_Static,
-			kType_Grass,
-			kType_Tree,
-			kType_Weapon,
-			kType_NPC,
-			kType_Creature,
-			kType_LeveledCreature,
-			kType_Spell,
-			kType_Enchantment,
-			kType_Potion,
-			kType_LeveledItem,
-			kType_Key,
-			kType_SoulGem,
-			kType_Ammo,
-			kType_Flora,
-			kType_Furniture,
-			kType_Sound,
-			kType_LandTexture,
-			kType_CombatStyle,
-			kType_LoadScreen,
-			kType_LeveledSpell,
-			kType_AnimObject,
-			kType_WaterType,
-			kType_SubSpace,
-			kType_EffectShader,
-			kType_SigilStone,
-
-			kType__MAX
-		};
-
-		// members
-		/*000*/ SInt32		type;						// one of the above IDs, -1 for groups
-		/*004*/ UInt32		group;						// parent group ID
-		/*008*/ char		hierarchy[MAX_PATH];		// path to the item in the tree view hierarchy, including the item name
-														// only filled for items with depth > 2
-		/*10C*/ char		name[MAX_PATH];				// display name
-	};
-	STATIC_ASSERT(sizeof(TreeViewItemData) == 0x210);
-
-	// stored as the splitter control's userdata
-	// 1C
-	class SplitterData
-	{
-	public:
-		// members
-		/*00*/ HWND         treeView;
-		/*04*/ HWND			listView;
-		/*08*/ HWND			parent;				// object window
-		/*0C*/ HWND			splitter;
-		/*10*/ UInt8		mouseOver;			// set when the cursor is over the splitter control
-		/*11*/ UInt8		performingDrag;
-		/*12*/ UInt8		enabled;			// disables all message processing when not set
-		/*13*/ UInt8		pad13;
-		/*14*/ POINT		dragOrigin;			// buffer used to store the coords of the cursor during a drag op
-	};
-	STATIC_ASSERT(sizeof(SplitterData) == 0x1C);
-
-	// column indices for the formlist
-	enum
-	{
-		kColumn_EditorID	= 0,
-		kColumn_FormID,
-		kColumn_Count,
-		kColumn_Users,			// not handled by the vanilla sort comparator
-		kColumn_Model,
-		kColumn_Size,
-		kColumn_Name,
-		kColumn_Race,
-		kColumn_Class,
-		kColumn_Faction,
-		kColumn_Script,
-		kColumn_Rank,
-		kColumn_Type,
-		kColumn_Weight,
-		kColumn_Value,
-		kColumn_Health,
-		kColumn_Quality,
-		kColumn_Icon,
-		kColumn_Enchantment,
-		kColumn_Rating,
-		kColumn_Speed,
-		kColumn_Reach,
-		kColumn_AttackDamage,
-		kColumn_IgnoresResist,
-		kColumn_Part,			// not handled by the vanilla sort comparator
-		kColumn_Female,
-		kColumn_Scroll,
-		kColumn_Teaches,
-		kColumn_Level,
-		kColumn_Effect1,
-		kColumn_Effect2,
-		kColumn_Effect3,
-		kColumn_Effect4,
-		kColumn_Time,
-		kColumn_Radius,
-		kColumn_Uses,
-		kColumn_Cost,
-		kColumn_Animation,
-		kColumn_LeveledList,
-		kColumn_Inventory,
-		kColumn_Enchanting,
-		kColumn_Playable,		// not handled by the vanilla sort comparator
-		kColumn_Charge,
-		kColumn_WeightClass,
-		kColumn_AutoCalc,
-		kColumn_Essential,
-		kColumn_Respawns,
-		kColumn_MovementType,
-		kColumn_WeaponShield,
-		kColumn_BipedAnim,
-		kColumn_AllPC,
-		kColumn_QuestObject,
-		kColumn_PCStartSpell,
-		kColumn_Sound,
-		kColumn_Texture,		// not handled by the vanilla sort comparator
-		kColumn_LevelSchool,
-		kColumn_Poison,
-		kColumn_FlickerEffect,
-		kColumn_Material,
-		kColumn_IdleAnim,
-		kColumn_OpenSound,
-		kColumn_CloseSound,
-		kColumn_Text,
-
-		kColumn__MAX
-	};
-
-	static void						RefreshFormList(void);
-	static void						InitializeSplitter(HWND Splitter, HWND TreeView, HWND ListView);
-	static void						SetSplitterEnabled(HWND Splitter, bool State);
-	static bool						GetMinimized(void);
-
-	// object window imposter wrappers
-	// caches must point to the calling imposter's child controls
-	static void						PerformLimitedInit(HWND ObjectWindow);
-	static void						PerformLimitedDeinit(HWND ObjectWindow);
-	static void						UpdateTreeChildren(HWND ObjectWindow);
-
-	// caches used by the object window, and to a lesser extent, other dialogs
 	static HWND*					WindowHandle;
-	static HWND*					FormListHandle;
-	static HWND*					TreeViewHandle;
-	static HWND*					SplitterHandle;
-
 	static UInt8*					Initialized;			// set when the window is created and initialized
-	static UInt32*					CurrentTreeNodeType;	// TreeViewItemData::type the current tree view selection, used with the tree entry and sort column arrays
-	static int*						SortColumnArray;
-	static TreeEntryInfo**			TreeEntryArray;
-
-	static DLGPROC					DialogProc;
-	enum
-	{
-		kFormListCtrlID = 1041,
-		kTreeViewCtrlID = 2093,
-		kSplitterCtrlID = 2157,
-	};
-
-	static HWND						PrimaryObjectWindowHandle;			// always points to the main object window instance
 };
 
 // container class, arbitrarily named
 class TESCellViewWindow
 {
 public:
-	static void						SetCellSelection(TESObjectCELL* Cell);
-	static void						RefreshObjectList(void);
-	static void						RefreshCellList(bool RefreshWorldspaces = false);
-	static void						UpdateCurrentWorldspace();
-	static void						SetCurrentCell(Vector3* Position, bool ReloadObjectList);
-	static TESWorldSpace*			GetCurrentWorldSpace();
-	static bool						CellListNeedsUpdate(Vector3* TargetCoords = nullptr);
-
-	static void						OnSelectCellListItem(TESObjectCELL* ItemCell, bool ClearRenderWindowSelection);
-
-	static void						CellListGetDispInfoCallback(NMLVDISPINFO* Data);
-	static void						RefListGetDispInfoCallback(NMLVDISPINFO* Data);
-
 	static HWND*					WindowHandle;
-	static HWND*					ObjectListHandle;
-	static HWND*					CellListHandle;
-
-	static UInt8*					MainMenuState;
-	static TESObjectCELL**			CurrentCellSelection;
-	static int*						ObjectListSortColumn;
-	static int*						CellListSortColumn;
-
-	enum
-	{
-		kWorldspaceLabel = 1164,
-		kWorldspaceComboBox = 2083,
-		kCellLabel = 1163,
-		kCellListView = 1155,
-		kObjectRefListView = 1156,
-	};
-
-	enum
-	{
-		kCellListColumn_EditorID = 0,
-		kCellListColumn_FormID,
-		kCellListColumn_Name,
-		kCellListColumn_Location,
-		kCellListColumn_Path,
-		kCellListColumn_Owner,
-
-		kCellListColumn__MAX
-	};
-
-	enum
-	{
-		kRefListColumn_EditorID = 0,
-		kRefListColumn_FormID,
-		kRefListColumn_Type,
-		kRefListColumn_Ownership,
-		kRefListColumn_LockLevel,
-
-		kRefListColumn__MAX
-	};
-
-	enum
-	{
-		kWindowMessage_ReloadWorldspacesAndCells	= 0x40E,		// wParam - reload worldspaces, lParam - don't reload cells
-		kWindowMessage_ReloadObjects				= 0x40F,
-	};
 };
 
-// 18
-class TESObjectSelection
+class TESComboBox
 {
 public:
-	// 0C
-	struct SelectedObjectsEntry
-	{
-		/*00*/ TESForm*					Data;
-		/*08*/ SelectedObjectsEntry*	Prev;
-		/*0C*/ SelectedObjectsEntry*	Next;
-	};
-
-	// members
-	/*00*/ SelectedObjectsEntry*		selectionList;
-	/*04*/ UInt32						selectionCount;
-	/*08*/ Vector3						selectionPositionVectorSum;
-	/*14*/ float						selectionBounds;						// init to 0.0
-
 	// methods
-	void								AddToSelection(TESForm* Form, bool AddSelectionBox = false);
-	void								RemoveFromSelection(TESForm* Form, bool RemoveSelectionBox = false);
-	void								ClearSelection(bool RemoveSelectionBox = false);
-	void								CalculatePositionVectorSum(void);
-	bool								HasObject(TESForm* Form);
-	void								CalculateBounds(void);
-
-	static TESObjectSelection*			CreateInstance(TESObjectSelection* Source = nullptr);
-	void								DeleteInstance();
-
-	static TESObjectSelection**			PrimaryInstance;
+	static void*							GetSelectedItemData(HWND hWnd);
 };
-STATIC_ASSERT(sizeof(TESObjectSelection) == 0x18);
-
-typedef TESObjectSelection		TESRenderSelection;
-
-#define _PRIMARYOBJSEL			(*TESObjectSelection::PrimaryInstance)
-#define _RENDERSEL				(*TESObjectSelection::PrimaryInstance)
-
-// container class, arbitrarily named
-class TESFileFormListWindow
-{
-public:
-	static void					Show(HWND Parent, TESFile* File);
-};
-
-// 4024
-class TESSliderControl
-{
-	// 40
-	struct CustomLabel
-	{
-		/*00*/ char				value[0x40];
-	};
-
-	enum
-	{
-		kLabelType_Integer	= 0,
-		kLabelType_Float	= 1,
-		kLabelType_Custom	= 2,
-	};
-
-	// members
-	/*0000*/ HWND				dialog;
-	/*0004*/ HWND				slider;
-	/*0008*/ int				sliderID;
-	/*000C*/ int				labelID;
-	/*0010*/ UInt32				labelType;
-	/*0014*/ UInt8				numericalValue;		// set to 1 when the value is calculated from the min/max values
-	/*0015*/ CustomLabel		labelValues[0x100];	// for each slider position/value
-	/*4015*/ UInt8				pad4015[3];
-	/*4018*/ float				minValue;
-	/*401C*/ float				maxValue;
-	/*4020*/ UInt8				decimalPlaces;		// when calculating the label text from the mix/max values
-	/*4021*/ UInt8				pad4021[3];
-};
-STATIC_ASSERT(sizeof(TESSliderControl) == 0x4024);

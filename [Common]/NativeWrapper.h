@@ -26,7 +26,7 @@ value struct RECT
 
 extern componentDLLInterface::CSEInterfaceTable* g_CSEInterfaceTable;
 
-[DllImport("Construction Set Extender.dll")]
+[DllImport("Geck Extender.dll")]
 void* QueryInterface(void);
 
 [DllImport("user32.dll")]

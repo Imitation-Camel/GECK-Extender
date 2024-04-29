@@ -1,14 +1,8 @@
 #pragma once
 #include "TESForm.h"
-#include "NiClasses.h"
 
 //	EditorAPI: TESFile and related classes.
 //	A number of class definitions are directly derived from the COEF API; Credit to JRoush for his comprehensive decoding
-
-namespace cseOverride
-{
-	template <class TKEY, class TVAL> class NiTPointerMap;
-}
 
 class	BSFile;
 
@@ -57,7 +51,8 @@ public:
 	/*10*/ TrackingData  trackingData; // used for internal revision control
 };
 
-// 420
+// 438
+// TODO - check and fix members
 class TESFile
 {
 public:
@@ -107,12 +102,11 @@ public:
 		/*14*/ UInt32        recordOffset;   // used internally to track header offsets of all open groups
 	};
 	typedef tList<GroupInfo> GroupList;
-	typedef cseOverride::NiTPointerMap< UInt32, TESFile* > ChildThreadFileMapT;
 
 	// members
 	/*000*/ UInt32               errorState;
 	/*004*/ TESFile*             ghostFileParent; // for ghost files, the parent TESFile* from the main thread
-	/*008*/ ChildThreadFileMapT* childThreadGhostFiles; // read-only duplicate files mapped by threadID for child threads
+	/*008*/ void*				 childThreadGhostFiles; // read-only duplicate files mapped by threadID for child threads
 	/*00C*/ BSFile*              unkFile00C; // temp file for backups?
 	/*010*/ BSFile*              bsFile; // used for actual read from / write to disk operations
 	/*014*/ UInt32               unkFile014;
@@ -152,38 +146,13 @@ public:
 	/*414*/ void*                currentRecordDCBuffer; // buffer for decompressed record data
 	/*418*/ UInt32               currentRecordDCLength; // length of decompressed record data
 	/*41C*/ TESFile*             unkFile41C; // file this object was cloned from. used for local copies of network files?
+	UInt32 unk430[(0x438 - 0x428) >> 2]; // ONMA stuff?
+
+
 
 	// methods
 	bool						IsActive(void) const;
 	bool						IsMaster(void) const;
 	bool						IsLoaded(void) const;
-
-	bool						SetLoaded(bool State);
-	bool						SetActive(bool State);
-	bool						SetMaster(bool State);
-
-	UInt32						Open();
-	bool						CreateTempFile(UInt32 Arg1 = 1);
-	bool						InitializeBSFile(UInt32 Arg1 = 0, bool Arg2 = false);
-	UInt32						SaveHeader();
-	UInt32						CorrectHeader();
-	bool						Close();
-
-	UInt8						GetRecordType();	// returns zero if invalid or no record
-	bool						GetNextRecord(bool SkipIgnoredRecords);
-	UInt32						JumpToBeginningOfRecord(); // move first chunk in current record, returns chunk type
-
-	bool						GetNextChunk();
-	void						GetChunkData4Bytes(UInt32* Out);
-	void						GetChunkData(void* OutBuffer, UInt32 BufferLength);
-
-	void						OpenGroupRecord(RecordInfo* GroupRecord);
-	void						CloseGroupRecord();
-
-	void						SetFileIndex(UInt8 Index);
-	bool						ValidateMasters();
-
-	static TESFile*				CreateInstance(const char* WorkingDirectory, const char* FileName, UInt8 OpenMode = NiFile::kFileMode_ReadOnly);
-	void						DeleteInstance(bool ReleaseMemory = true);
 };
-STATIC_ASSERT(sizeof(TESFile) == 0x420);
+static_assert(sizeof(TESFile) == 0x438);

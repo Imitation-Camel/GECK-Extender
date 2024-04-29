@@ -431,7 +431,7 @@ namespace componentDLLInterface
 		const CommandInfo* CommandTableEnd;
 		UInt32 (* GetCommandReturnType)(const CommandInfo* cmd);
 		const PluginInfo* (* GetParentPlugin)(const CommandInfo* cmd);
-		UInt32 (* GetRequiredOBSEVersion)(const CommandInfo* cmd);
+		UInt32 (* GetRequiredNVSEVersion)(const CommandInfo* cmd);
 #else
 		struct PluginInfo
 		{
@@ -456,7 +456,7 @@ namespace componentDLLInterface
 		const ObScriptCommandInfo* CommandTableEnd;
 		UInt32 (* GetCommandReturnType)(const ObScriptCommandInfo* cmd);
 		const PluginInfo* (* GetParentPlugin)(const ObScriptCommandInfo* cmd);
-		UInt32 (* GetRequiredOBSEVersion)(const ObScriptCommandInfo* cmd);
+		UInt32 (* GetRequiredNVSEVersion)(const ObScriptCommandInfo* cmd);
 #endif
 		struct DeveloperURLData
 		{

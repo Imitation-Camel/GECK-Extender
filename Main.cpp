@@ -1,40 +1,25 @@
 #include "Main.h"
 #include "PluginAPIManager.h"
 #include "VersionInfo.h"
+#include "GECK Extender_Resource.h"
 
 #include "[Common]\CLIWrapper.h"
-#include "Hooks\Hooks-Dialog.h"
-#include "Hooks\Hooks-LOD.h"
-#include "Hooks\Hooks-Plugins.h"
-#include "Hooks\Hooks-AssetSelector.h"
 #include "Hooks\Hooks-ScriptEditor.h"
-#include "Hooks\Hooks-Renderer.h"
 #include "Hooks\Hooks-Misc.h"
-#include "Hooks\Hooks-Events.h"
 
-#include "Achievements.h"
 #include "Console.h"
-#include "Render Window\RenderWindowManager.h"
-#include "HallOfFame.h"
 #include "UIManager.h"
 #include "WorkspaceManager.h"
-#include "ChangeLogManager.h"
-#include "Render Window\AuxiliaryViewport.h"
-#include "OldCSInteropManager.h"
 #include "Coda\Coda.h"
-#include "GlobalClipboard.h"
-#include "FormUndoStack.h"
 #include "MainWindowOverrides.h"
-#include "CellViewWindowOverrides.h"
-#include "ObjectWindowOverrides.h"
 
 #include "[BGSEEBase]\ToolBox.h"
 #include "[BGSEEBase]\Script\CodaVM.h"
 
-namespace cse
+namespace gecke
 {
-	OBSEMessagingInterface*						XSEMsgIntfc = nullptr;
-	OBSECommandTableInterface*					XSECommandTableIntfc = nullptr;
+	NVSEMessagingInterface*						XSEMsgIntfc = nullptr;
+	NVSECommandTableInterface*					XSECommandTableIntfc = nullptr;
 	PluginHandle								XSEPluginHandle = kPluginHandle_Invalid;
 
 	ReleaseNameTable							ReleaseNameTable::Instance;
@@ -43,18 +28,7 @@ namespace cse
 	ReleaseNameTable::ReleaseNameTable() :
 		bgsee::ReleaseNameTable()
 	{
-		RegisterRelease(6, 0, "Konniving Kelpie");
-		RegisterRelease(6, 1, "Cretinous Codpiece");
-		RegisterRelease(6, 2, "Talkative Badger");
-		RegisterRelease(6, 3, "Drunken Glaswegian");
-		RegisterRelease(6, 4, "Subterranean Homesick Alien");
-		RegisterRelease(7, 0, "Patagonian Petticoat");
-		RegisterRelease(7, 1, "Bull-buggering Bollocks");
-		RegisterRelease(8, 0, "Dead Dove");
-		RegisterRelease(8, 1, "Logical Half Nelson");
-		RegisterRelease(10, 0, "Y-Y-Zed");
-		RegisterRelease(11, 0, "Asthmatic Ant");
-		RegisterRelease(11, 1, "Pointless Peasant");
+		RegisterRelease(0, 1, "shadeMe Skunkworks");
 	}
 
 	ReleaseNameTable::~ReleaseNameTable()
@@ -62,9 +36,9 @@ namespace cse
 		;//
 	}
 
-	InitCallbackQuery::InitCallbackQuery(const OBSEInterface* OBSE) :
+	InitCallbackQuery::InitCallbackQuery(const NVSEInterface* NVSE) :
 		bgsee::DaemonCallback(),
-		OBSE(OBSE)
+		NVSE(NVSE)
 	{
 		;//
 	}
@@ -76,10 +50,10 @@ namespace cse
 
 	bool InitCallbackQuery::Handle(void* Parameter)
 	{
-		BGSEECONSOLE_MESSAGE("Initializing OBSE Interfaces");
+		BGSEECONSOLE_MESSAGE("Initializing NVSE Interfaces");
 		BGSEECONSOLE->Indent();
-		XSEMsgIntfc = (OBSEMessagingInterface*)OBSE->QueryInterface(kInterface_Messaging);
-		XSECommandTableIntfc = (OBSECommandTableInterface*)OBSE->QueryInterface(kInterface_CommandTable);
+		XSEMsgIntfc = (NVSEMessagingInterface*)NVSE->QueryInterface(kInterface_Messaging);
+		XSECommandTableIntfc = (NVSECommandTableInterface*)NVSE->QueryInterface(kInterface_CommandTable);
 
 		if (XSEMsgIntfc == nullptr || XSECommandTableIntfc == nullptr)
 		{
@@ -90,16 +64,16 @@ namespace cse
 
 		BGSEECONSOLE_MESSAGE("Initializing Component DLLs");
 		BGSEECONSOLE->Indent();
-		if (cliWrapper::ImportInterfaces(OBSE) == false)
+		if (cliWrapper::ImportInterfaces(NVSE) == false)
 			return false;
 		BGSEECONSOLE->Outdent();
 
 		return true;
 	}
 
-	InitCallbackLoad::InitCallbackLoad(const OBSEInterface* OBSE) :
+	InitCallbackLoad::InitCallbackLoad(const NVSEInterface* NVSE) :
 		bgsee::DaemonCallback(),
-		OBSE(OBSE)
+		NVSE(NVSE)
 	{
 		;//
 	}
@@ -114,15 +88,9 @@ namespace cse
 		BGSEECONSOLE_MESSAGE("Initializing Hooks");
 		BGSEECONSOLE->Indent();
 		hooks::PatchEntryPointHooks();
-		hooks::PatchDialogHooks();
-		hooks::PatchLODHooks();
-		hooks::PatchTESFileHooks();
-		hooks::PatchAssetSelectorHooks();
 		hooks::PatchScriptEditorHooks();
-		hooks::PatchRendererHooks();
 		hooks::PatchMiscHooks();
 		hooks::PatchMessageHanders();
-		hooks::PatchEventHooks();
 		BGSEECONSOLE->Outdent();
 
 		BGSEECONSOLE_MESSAGE("Initializing Events");
@@ -131,25 +99,17 @@ namespace cse
 		events::InitializeSources();
 		BGSEECONSOLE->Outdent();
 
-		BGSEECONSOLE_MESSAGE("Initializing Serialization");
-		BGSEECONSOLE->Indent();
-		serialization::Initialize();
-		BGSEECONSOLE->Outdent();
-
 		BGSEECONSOLE_MESSAGE("Initializing UI Manager");
 		BGSEECONSOLE->Indent();
-		bool ComponentInitialized = bgsee::UIManager::Initialize("TES Construction Set",
+		bool ComponentInitialized = bgsee::UIManager::Initialize("Garden of Eden Creation Kit",
 																 LoadMenu(BGSEEMAIN->GetExtenderHandle(), MAKEINTRESOURCE(IDR_MAINMENU)));
 		BGSEECONSOLE->Outdent();
 
 		if (ComponentInitialized == false)
 			return false;
 
-		BGSEECONSOLE_MESSAGE("Registering OBSE Plugin Message Handlers");
-		XSEMsgIntfc->RegisterListener(XSEPluginHandle, "OBSE", OBSEMessageHandler);
-
-		BGSEECONSOLE_MESSAGE("Initializing Plugin Interface Manager");
-		PluginAPIManager::Instance.Initialize();
+		BGSEECONSOLE_MESSAGE("Registering NVSE Plugin Message Handlers");
+		XSEMsgIntfc->RegisterListener(XSEPluginHandle, "NVSE", NVSEMessageHandler);
 
 		return true;
 	}
@@ -173,9 +133,9 @@ namespace cse
 
 	void InitCallbackPostMainWindowInit::RegisterCrtExceptionHandlers()
 	{
-		Crt::SetNewHandler(reinterpret_cast<_PNH>(&InitCallbackPostMainWindowInit::CrtNewHandler));
-		Crt::SetPureCallHandler(reinterpret_cast<_purecall_handler>(&InitCallbackPostMainWindowInit::CrtPureCallHandler));
-		Crt::SetInvalidParameterHandler(reinterpret_cast<_invalid_parameter_handler>(&InitCallbackPostMainWindowInit::CrtInvalidParameterHandler));
+		//Crt::SetNewHandler(reinterpret_cast<_PNH>(&InitCallbackPostMainWindowInit::CrtNewHandler));
+		//Crt::SetPureCallHandler(reinterpret_cast<_purecall_handler>(&InitCallbackPostMainWindowInit::CrtPureCallHandler));
+		//Crt::SetInvalidParameterHandler(reinterpret_cast<_invalid_parameter_handler>(&InitCallbackPostMainWindowInit::CrtInvalidParameterHandler));
 	}
 
 	InitCallbackPostMainWindowInit::~InitCallbackPostMainWindowInit()
@@ -186,15 +146,7 @@ namespace cse
 	bool InitCallbackPostMainWindowInit::Handle(void* Parameter)
 	{
 		uiManager::InitializeMainWindowOverrides();
-		uiManager::InitializeObjectWindowOverrides();
-		uiManager::InitializeCellViewWindowOverrides();
-		uiManager::DeferredComboBoxController::Instance.Initialize();
-
-		BGSEECONSOLE_MESSAGE("Initializing Render Window Manager");
-		BGSEECONSOLE->Indent();
-		bool ComponentInitialized = _RENDERWIN_MGR.Initialize();
-		SME_ASSERT(ComponentInitialized);
-		BGSEECONSOLE->Outdent();
+		//uiManager::DeferredComboBoxController::Instance.Initialize();
 
 		if (settings::dialogs::kShowMainWindowsInTaskbar.GetData().i)
 		{
@@ -230,34 +182,17 @@ namespace cse
 		console::Initialize();
 		BGSEECONSOLE->Outdent();
 
-		BGSEECONSOLE_MESSAGE("Initializing Auxiliary Viewport");
-		BGSEECONSOLE->Indent();
-		AUXVIEWPORT->Initialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Achievements");
-		BGSEECONSOLE->Indent();
-		achievements::Initialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Hall of Fame");
-		BGSEECONSOLE->Indent();
-		hallOfFame::Initialize();
-		BGSEECONSOLE->Outdent();
-
 		BGSEECONSOLE_MESSAGE("Initializing ScriptEditor");
 		BGSEECONSOLE->Indent();
 
 		componentDLLInterface::CommandTableData XSECommandTableData;
 		XSECommandTableData.GetCommandReturnType = XSECommandTableIntfc->GetReturnType;
 		XSECommandTableData.GetParentPlugin = XSECommandTableIntfc->GetParentPlugin;
-		XSECommandTableData.GetRequiredOBSEVersion = XSECommandTableIntfc->GetRequiredOBSEVersion;
+		XSECommandTableData.GetRequiredNVSEVersion = XSECommandTableIntfc->GetRequiredNVSEVersion;
 		XSECommandTableData.CommandTableStart = XSECommandTableIntfc->Start();
 		XSECommandTableData.CommandTableEnd = XSECommandTableIntfc->End();
-		PluginAPIManager::Instance.ConsumeIntelliSenseInterface(&XSECommandTableData);
 
 		componentDLLInterface::IntelliSenseUpdateData GMSTCollectionData;
-		GameSettingCollection::Instance->MarshalAll(&GMSTCollectionData.GMSTListHead, &GMSTCollectionData.GMSTCount, false);
 		cliWrapper::interfaces::SE->InitializeComponents(&XSECommandTableData, &GMSTCollectionData);
 
 		BGSEECONSOLE->Outdent();
@@ -267,10 +202,10 @@ namespace cse
 		script::Initialize();
 		BGSEECONSOLE->Outdent();
 
-		BGSEECONSOLE_MESSAGE("Initializing Toolbox");
-		BGSEECONSOLE->Indent();
-		bgsee::ToolBox::Initialize(BGSEEMAIN->INIGetter(), BGSEEMAIN->INISetter());
-		BGSEECONSOLE->Outdent();
+		//BGSEECONSOLE_MESSAGE("Initializing Toolbox");
+		//BGSEECONSOLE->Indent();
+		//bgsee::ToolBox::Initialize(BGSEEMAIN->INIGetter(), BGSEEMAIN->INISetter());
+		//BGSEECONSOLE->Outdent();
 
 		BGSEECONSOLE_MESSAGE("Initializing Workspace Manager");
 		BGSEECONSOLE->Indent();
@@ -282,69 +217,21 @@ namespace cse
 		uiManager::Initialize();
 		BGSEECONSOLE->Outdent();
 
-		BGSEECONSOLE_MESSAGE("Initializing Render Window");
-		BGSEECONSOLE->Indent();
-		renderWindow::Initialize();
-		BGSEECONSOLE->Outdent();
+		//BGSEECONSOLE_MESSAGE("Initializing Panic Save Handler");
+		//BGSEECONSOLE->Indent();
+		//_DATAHANDLER->PanicSave(true);
+		//BGSEECONSOLE->Outdent();
 
-		BGSEECONSOLE_MESSAGE("Initializing GMST Default Copy");
-		BGSEECONSOLE->Indent();
-		GameSettingCollection::Instance->CreateDefaultCopy();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing IdleAnim Tree");
-		BGSEECONSOLE->Indent();
-		TESIdleForm::InitializeIdleFormTreeRootNodes();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Archive Manager");
-		BGSEECONSOLE->Indent();
-		ArchiveManager::LoadSkippedArchives((std::string(std::string(BGSEEMAIN->GetAPPPath()) + "Data\\")).c_str());
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Change Log Manager");
-		BGSEECONSOLE->Indent();
-		changeLogManager::Initialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Panic Save Handler");
-		BGSEECONSOLE->Indent();
-		_DATAHANDLER->PanicSave(true);
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Global Clipboard");
-		BGSEECONSOLE->Indent();
-		globalClipboard::Initialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Form Undo Stack");
-		BGSEECONSOLE->Indent();
-		formUndoStack::Initialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Initializing Startup Manager");
-		BGSEECONSOLE->Indent();
-		StartupManager::LoadStartupWorkspace();
-		StartupManager::LoadStartupPlugin();
-		StartupManager::LoadStartupScript();
-		BGSEECONSOLE->Outdent();
+		//BGSEECONSOLE_MESSAGE("Initializing Startup Manager");
+		//BGSEECONSOLE->Indent();
+		//StartupManager::LoadStartupWorkspace();
+		//StartupManager::LoadStartupPlugin();
+		//StartupManager::LoadStartupScript();
+		//BGSEECONSOLE->Outdent();
 
 		BGSEECONSOLE->OutdentAll();
 		BGSEECONSOLE_MESSAGE("%s Initialized!", BGSEEMAIN->ExtenderGetDisplayName());
 		BGSEECONSOLE->Pad(2);
-
-		BGSEEACHIEVEMENTS->Unlock(achievements::kTheWiseOne);
-
-		if (BGSEECONSOLE->GetLogsWarnings() == false)
-			BGSEEACHIEVEMENTS->Unlock(achievements::kFlyingBlind);
-
-		for (const CommandInfo* Itr = XSECommandTableData.CommandTableStart; Itr < XSECommandTableData.CommandTableEnd; ++Itr)
-		{
-			if (strlen(Itr->longName) > 0)
-				BGSEEACHIEVEMENTS->Unlock(achievements::kCommandant);
-		}
-
-		BGSEEACHIEVEMENTS->Unlock(achievements::kHappyBDayMoi, false, false, true);
 
 		return true;
 	}
@@ -361,40 +248,23 @@ namespace cse
 		TESDialog::WriteBoundsToINI(*TESObjectWindow::WindowHandle, "Object Window");
 		TESDialog::WriteBoundsToINI(*TESRenderWindow::WindowHandle, "Render Window");
 
-		BGSEECONSOLE_MESSAGE("Flushed CS INI Settings");
+		BGSEECONSOLE_MESSAGE("Flushed GECK INI Settings");
 
-		settings::dialogs::kRenderWindowState.SetInt((GetMenuState(*TESCSMain::MainMenuHandle,
-			TESCSMain::kMainMenu_View_RenderWindow, MF_BYCOMMAND) & MF_CHECKED) != 0);
-		settings::dialogs::kCellViewWindowState.SetInt((GetMenuState(*TESCSMain::MainMenuHandle,
-			TESCSMain::kMainMenu_View_CellViewWindow, MF_BYCOMMAND) & MF_CHECKED) != 0);
-		settings::dialogs::kObjectWindowState.SetInt((GetMenuState(*TESCSMain::MainMenuHandle,
-			TESCSMain::kMainMenu_View_ObjectWindow, MF_BYCOMMAND) & MF_CHECKED) != 0);
+		//settings::dialogs::kRenderWindowState.SetInt((GetMenuState(*TESCSMain::MainMenuHandle,
+		//	TESCSMain::kMainMenu_View_RenderWindow, MF_BYCOMMAND) & MF_CHECKED) != 0);
+		//settings::dialogs::kCellViewWindowState.SetInt((GetMenuState(*TESCSMain::MainMenuHandle,
+		//	TESCSMain::kMainMenu_View_CellViewWindow, MF_BYCOMMAND) & MF_CHECKED) != 0);
+		//settings::dialogs::kObjectWindowState.SetInt((GetMenuState(*TESCSMain::MainMenuHandle,
+		//	TESCSMain::kMainMenu_View_ObjectWindow, MF_BYCOMMAND) & MF_CHECKED) != 0);
 
 		TESCSMain::DeinitializeCSWindows();
-		cse::events::general::kShutdown.RaiseEvent();
+		events::general::kShutdown.RaiseEvent();
 
-		BGSEECONSOLE_MESSAGE("Deinitializing Plugin Interface Manager");
-		PluginAPIManager::Instance.Deinitailize();
 
-		BGSEECONSOLE_MESSAGE("Deinitializing Render Window");
-		BGSEECONSOLE->Indent();
-		renderWindow::Deinitialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Achievements Manager");
-		BGSEECONSOLE->Indent();
-		achievements::Deinitialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Hall Of Fame");
-		BGSEECONSOLE->Indent();
-		hallOfFame::Deinitialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Tool Manager");
-		BGSEECONSOLE->Indent();
-		bgsee::ToolBox::Deinitialize();
-		BGSEECONSOLE->Outdent();
+		//BGSEECONSOLE_MESSAGE("Deinitializing Tool Manager");
+		//BGSEECONSOLE->Indent();
+		//bgsee::ToolBox::Deinitialize();
+		//BGSEECONSOLE->Outdent();
 
 		BGSEECONSOLE_MESSAGE("Deinitializing Workspace Manager");
 		BGSEECONSOLE->Indent();
@@ -406,34 +276,9 @@ namespace cse
 		script::Deinitialize();
 		BGSEECONSOLE->Outdent();
 
-		BGSEECONSOLE_MESSAGE("Deinitializing Global Clipboard");
-		BGSEECONSOLE->Indent();
-		globalClipboard::Deinitialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Form Undo Stack");
-		BGSEECONSOLE->Indent();
-		formUndoStack::Deinitialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Auxiliary Viewport");
-		BGSEECONSOLE->Indent();
-		delete AUXVIEWPORT;
-		BGSEECONSOLE->Outdent();
-
 		BGSEECONSOLE_MESSAGE("Deinitializing Script Editor");
 		BGSEECONSOLE->Indent();
 		cliWrapper::interfaces::SE->Deinitalize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Change Log Manager");
-		BGSEECONSOLE->Indent();
-		changeLogManager::Deinitialize();
-		BGSEECONSOLE->Outdent();
-
-		BGSEECONSOLE_MESSAGE("Deinitializing Serialization");
-		BGSEECONSOLE->Indent();
-		serialization::Deinitialize();
 		BGSEECONSOLE->Outdent();
 
 		BGSEECONSOLE_MESSAGE("Deinitializing Events");
@@ -474,7 +319,7 @@ namespace cse
 		BGSEECONSOLE->Indent();
 
 		bool PanicSaved = false;
-		if (settings::general::kSalvageActivePluginOnCrash().i)
+	/*	if (settings::general::kSalvageActivePluginOnCrash().i)
 		{
 			BGSEECONSOLE_MESSAGE("Attempting to salvage the active file...");
 			BGSEECONSOLE->Indent();
@@ -485,12 +330,9 @@ namespace cse
 				BGSEECONSOLE_MESSAGE("Bollocks-bollocks-bollocks! No can do...");
 
 			BGSEECONSOLE->Outdent();
-		}
+		}*/
 
 		BGSEECONSOLE->Outdent();
-
-		if (BGSEEDAEMON->GetFullInitComplete())
-			BGSEEACHIEVEMENTS->Unlock(achievements::kSaboteur, false, true);
 
 		// it's highly inadvisable to do anything inside the handler apart from the bare minimum of diagnostics
 		// memory allocations are a big no-no as the CRT state can potentially be corrupted...
@@ -506,15 +348,6 @@ namespace cse
 		if (PanicSaved)
 			CrashMessage += "Unsaved changes were saved to the panic save file in the Data\\Backup folder.\n\n";
 
-		bool FunnyGuyUnlocked = BGSEEDAEMON->GetFullInitComplete() &&
-			(achievements::kFunnyGuy->GetUnlocked() || achievements::kFunnyGuy->GetTriggered());
-
-		if (!FunnyGuyUnlocked)
-		{
-			MBFlags &= ~MB_OK;
-			MBFlags |= MB_YESNOCANCEL;
-			CrashMessage += "Do you wish to resume execution once you've:\n   1. Prayed to your various deities\n   2. Sent the shadeMe a pile of cash, and\n   3. Pleaded to the editor in a soft, sultry voice in hopes of preventing it from crashing outright upon selecting 'Yes' in this dialog?";
-		}
 
 		switch (MessageBox(nullptr, CrashMessage.c_str(), BGSEEMAIN->ExtenderGetDisplayName(), MBFlags))
 		{
@@ -526,12 +359,6 @@ namespace cse
 			break;
 		case IDNO:
 			ResumeExecution = false;
-			break;
-		case IDCANCEL:
-			if (BGSEEDAEMON->GetFullInitComplete())
-				BGSEEACHIEVEMENTS->Unlock(achievements::kFunnyGuy, false, true);
-
-			MessageBox(nullptr, "Hah! Nice try, Bob.", BGSEEMAIN->ExtenderGetDisplayName(), MB_TASKMODAL | MB_TOPMOST | MB_SETFOREGROUND | MB_ICONERROR);
 			break;
 		}
 
@@ -546,26 +373,7 @@ namespace cse
 
 		if (Load)
 		{
-			hooks::_MemHdlr(AutoLoadActivePluginOnStartup).WriteJump();
-
-			TESFile* File = _DATAHANDLER->LookupPluginByName(PluginName);
-			if (File)
-			{
-				BGSEECONSOLE_MESSAGE("Loading plugin '%s'", PluginName);
-				BGSEECONSOLE->Indent();
-
-				File->SetLoaded(true);
-				if (_stricmp(PluginName, "Oblivion.esm"))
-					File->SetActive(true);
-
-				SendMessage(*TESCSMain::WindowHandle, WM_COMMAND, TESCSMain::kToolbar_DataFiles, 0);
-
-				BGSEECONSOLE->Outdent();
-			}
-			else if (strlen(PluginName) >= 1)
-				BGSEECONSOLE_MESSAGE("Non-existent startup plugin '%s'", PluginName);
-
-			hooks::_MemHdlr(AutoLoadActivePluginOnStartup).WriteBuffer();
+			// TODO: implement
 		}
 	}
 
@@ -592,7 +400,7 @@ namespace cse
 			BGSEEWORKSPACE->SelectCurrentWorkspace(WorkspacePath);
 	}
 
-	void CSEInteropHandler(OBSEMessagingInterface::Message* Msg)
+	void GECKSEInteropHandler(NVSEMessagingInterface::Message* Msg)
 	{
 		switch (Msg->type)
 		{
@@ -600,7 +408,7 @@ namespace cse
 			{
 				BGSEECONSOLE_MESSAGE("Dispatching Plugin Interop Interface to '%s'", Msg->sender);
 				BGSEECONSOLE->Indent();
-				XSEMsgIntfc->Dispatch(XSEPluginHandle, 'CSEI', (void*)PluginAPIManager::Instance.GetInterface(), 4, Msg->sender);
+				// XSEMsgIntfc->Dispatch(XSEPluginHandle, 'CSEI', (void*)PluginAPIManager::Instance.GetInterface(), 4, Msg->sender);
 				BGSEECONSOLE->Outdent();
 			}
 
@@ -608,33 +416,32 @@ namespace cse
 		}
 	}
 
-	void OBSEMessageHandler(OBSEMessagingInterface::Message* Msg)
+	void NVSEMessageHandler(NVSEMessagingInterface::Message* Msg)
 	{
 		switch (Msg->type)
 		{
-		case OBSEMessagingInterface::kMessage_PostLoad:
-			XSEMsgIntfc->RegisterListener(XSEPluginHandle, nullptr, CSEInteropHandler);
+		case NVSEMessagingInterface::kMessage_PostLoad:
+			XSEMsgIntfc->RegisterListener(XSEPluginHandle, nullptr, GECKSEInteropHandler);
 			break;
-		case OBSEMessagingInterface::kMessage_PostPostLoad:
-
+		case NVSEMessagingInterface::kMessage_PostPostLoad:
 			break;
 		}
 	}
 }
 
-using namespace cse;
+using namespace gecke;
 
 extern "C"
 {
-	__declspec(dllexport) bool OBSEPlugin_Query(const OBSEInterface * obse, PluginInfo * info)
+	__declspec(dllexport) bool NVSEPlugin_Query(const NVSEInterface * nvse, PluginInfo * info)
 	{
 		info->infoVersion = PluginInfo::kInfoVersion;
 		info->name = BGSEEMAIN_EXTENDERSHORTNAME;
 		info->version = PACKED_SME_VERSION;
 
-		XSEPluginHandle = obse->GetPluginHandle();
+		XSEPluginHandle = nvse->GetPluginHandle();
 
-		if (obse->isEditor == false)
+		if (nvse->isEditor == false)
 			return false;
 
 		SME::MersenneTwister::init_genrand(GetTickCount());
@@ -643,22 +450,21 @@ extern "C"
 
 		bgsee::Main::InitializationParams InitParams;
 		InitParams.LongName = BGSEEMAIN_EXTENDERLONGNAME;
-		InitParams.DisplayName = IsWarholAGenius ? "ConstruKction Set Extender" : nullptr;
+		InitParams.DisplayName = IsWarholAGenius ? "GECKO Extender" : nullptr;
 		InitParams.ShortName = BGSEEMAIN_EXTENDERSHORTNAME;
 		InitParams.ReleaseName = ReleaseNameTable::Instance.LookupRelease(VERSION_MAJOR, VERSION_MINOR);
 		InitParams.Version = PACKED_SME_VERSION;
-		InitParams.EditorID = bgsee::Main::kExtenderParentEditor_TES4CS;
-		InitParams.EditorSupportedVersion = CS_VERSION_1_2;
-		InitParams.EditorCurrentVersion = obse->editorVersion;
-		InitParams.APPPath = obse->GetOblivionDirectory();
+		InitParams.EditorID = bgsee::Main::kExtenderParentEditor_FONVGECK;
+		InitParams.EditorSupportedVersion = 0x04002060;
+		InitParams.EditorCurrentVersion = nvse->editorVersion;
+		InitParams.APPPath = nvse->GetRuntimeDirectory();
 		InitParams.SEPluginHandle = XSEPluginHandle;
-		InitParams.SEMinimumVersion = 21;
-		InitParams.SECurrentVersion = obse->obseVersion;
+		InitParams.SEMinimumVersion = 0x06030050;
+		InitParams.SECurrentVersion = nvse->nvseVersion;
 		InitParams.DotNETFrameworkVersion = "v4.0.30319";
 		InitParams.CLRMemoryProfiling = false;
 
 		settings::Register(InitParams.INISettings);
-		AuxiliaryViewport::RegisterINISettings(InitParams.INISettings);
 
 #ifdef WAIT_FOR_DEBUGGER
 		InitParams.WaitForDebugger = true;
@@ -681,15 +487,15 @@ extern "C"
 		if (ComponentInitialized == false)
 		{
 			MessageBox(nullptr,
-					   "The Construction Set Extender failed to initialize correctly!\n\nCouldn't initialize main module.",
+					   "The GECK Extender failed to initialize correctly!\n\nCouldn't initialize main module.",
 					   "Fatal Error",
 					   MB_TASKMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
 
 			return false;
 		}
 
-		BGSEEDAEMON->RegisterInitCallback(bgsee::Daemon::kInitCallback_Query, new InitCallbackQuery(obse));
-		BGSEEDAEMON->RegisterInitCallback(bgsee::Daemon::kInitCallback_Load, new InitCallbackLoad(obse));
+		BGSEEDAEMON->RegisterInitCallback(bgsee::Daemon::kInitCallback_Query, new InitCallbackQuery(nvse));
+		BGSEEDAEMON->RegisterInitCallback(bgsee::Daemon::kInitCallback_Load, new InitCallbackLoad(nvse));
 		BGSEEDAEMON->RegisterInitCallback(bgsee::Daemon::kInitCallback_PostMainWindowInit, new InitCallbackPostMainWindowInit());
 		BGSEEDAEMON->RegisterInitCallback(bgsee::Daemon::kInitCallback_Epilog, new InitCallbackEpilog());
 		BGSEEDAEMON->RegisterDeinitCallback(new DeinitCallback());
@@ -698,7 +504,7 @@ extern "C"
 		if (BGSEEDAEMON->ExecuteInitCallbacks(bgsee::Daemon::kInitCallback_Query) == false)
 		{
 			MessageBox(nullptr,
-					   "The Construction Set Extender failed to initialize correctly!\n\nIt's highly advised that you close the CS right away. More information can be found in the log file (Construction Set Extender.log in the root game directory).",
+					   "The GECK Extender failed to initialize correctly!\n\nIt's highly advised that you close the editor right away. More information can be found in the log file (GECK Extender.log in the root game directory).",
 					   "The Cyrodiil Bunny Ranch",
 					   MB_TASKMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
 
@@ -709,12 +515,12 @@ extern "C"
 		return true;
 	}
 
-	__declspec(dllexport) bool OBSEPlugin_Load(const OBSEInterface * obse)
+	__declspec(dllexport) bool NVSEPlugin_Load(const NVSEInterface * nvse)
 	{
 		if (BGSEEDAEMON->ExecuteInitCallbacks(bgsee::Daemon::kInitCallback_Load) == false)
 		{
 			MessageBox(nullptr,
-					   "The Construction Set Extender failed to load correctly!\n\nIt's highly advised that you close the CS right away. More information can be found in the log file (Construction Set Extender.log in the root game directory).",
+					   "The GECK Extender failed to load correctly!\n\nIt's highly advised that you close the editor right away. More information can be found in the log file (GECK Extender.log in the root game directory).",
 					   "Rumpy-Pumpy!!",
 					   MB_TASKMODAL | MB_SETFOREGROUND | MB_ICONERROR | MB_OK);
 

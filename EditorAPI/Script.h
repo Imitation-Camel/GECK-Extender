@@ -10,7 +10,7 @@
 
 typedef std::vector<TESForm*> ScriptMagicItemCrossRefArrayT;
 
-// 54
+// 58
 class Script : public TESForm
 {
 public:
@@ -40,6 +40,7 @@ public:
 		/*14*/ UInt32					unk14;
 		/*18*/ BSString					name;
 	};
+	static_assert(sizeof(Script::VariableInfo) == 0x20);
 	typedef tList<VariableInfo> VariableListT;
 
 	enum ScriptType
@@ -56,18 +57,20 @@ public:
 		/*04*/ UInt32					refCount;			// number of reference variables
 		/*08*/ UInt32					dataLength;
 		/*0C*/ UInt32					lastVarIdx;
-		/*10*/ UInt32					type;
+		/*10*/ UInt16					type;
+		/*12*/ UInt8					compileResult;		//	set to 1 after successful compilation, zero otherwise
+		/*13*/ UInt8					pad13;
 	};
+	static_assert(sizeof(Script::ScriptInfo) == 0x14);
 
 	// members
 	//     /*00*/ TESForm
-	/*24*/ ScriptInfo					info;
-	/*38*/ char*						text;
-	/*3C*/ void*						data;
-	/*40*/ RefVariableListT				refList;
-	/*48*/ VariableListT				varList;
-	/*50*/ UInt8						compileResult;		//	set to 1 after successful compilation, zero otherwise
-	/*51*/ UInt8						pad51[3];
+	/*28*/ UInt32						unk28;
+	/*2C*/ ScriptInfo					info;
+	/*40*/ char*						text;
+	/*44*/ void*						data;
+	/*48*/ RefVariableListT				refList;
+	/*50*/ VariableListT				varList;
 
 	// methods
 	VariableInfo*						LookupVariableInfoByName(const char* Name);
@@ -81,10 +84,8 @@ public:
 	bool								Compile(bool AsResultScript = false);
 	void								SetText(const char* Text);
 	void								RemoveCompiledData(void);
-
-	UInt32								GetScriptableFormUseCount(void);
-	UInt32								GetEffectItemReferences(ScriptMagicItemCrossRefArrayT& OutList);
 };
+static_assert(sizeof(Script) == 0x58);
 
 enum ScriptCompileErrors
 {

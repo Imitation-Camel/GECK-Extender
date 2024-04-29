@@ -1,18 +1,15 @@
 #include "UIManager.h"
 #include "Main.h"
-#include "Construction Set Extender_Resource.h"
-#include "DialogImposterManager.h"
-#include "MiscWindowOverrides.h"
+#include "Geck Extender_Resource.h"
 #include "MainWindowOverrides.h"
-#include "Achievements.h"
-#include "HallOfFame.h"
 #include "[Common]\CLIWrapper.h"
 
 
-namespace cse
+namespace gecke
 {
 	namespace uiManager
 	{
+#if 0
 		FilterableFormListManager FilterableFormListManager::Instance;
 
 		FilterableFormListManager::FilterableWindowData::FilterableWindowData( InitParams Params ) :
@@ -151,7 +148,6 @@ namespace cse
 					break;
 
 				FilterString = Buffer;
-				achievements::kPowerUser->UnlockTool(achievements::AchievementPowerUser::kTool_FormListFilter);
 
 				if (!HasRegEx())
 					SME::StringHelpers::MakeLower(FilterString);
@@ -554,7 +550,6 @@ namespace cse
 
 			return nullptr;
 		}
-
 		FormEnumerationManager		FormEnumerationManager::Instance;
 
 		FormEnumerationManager::FormEnumerationManager() :
@@ -856,11 +851,11 @@ namespace cse
 															ComboBoxSubclassPredicate);
 			Initialized = true;
 		}
+#endif
 
 
 		void Initialize( void )
 		{
-			InitializeMiscWindowOverrides();
 
 			BGSEEUI->GetWindowHandleCollection(bgsee::UIManager::kHandleCollection_DragDropableWindows)->Add(
 																								cliWrapper::interfaces::TAG->GetFormDropWindowHandle());
@@ -929,8 +924,6 @@ namespace cse
 				BGSEEUI->GetWindowStyler()->RegisterStyle(TESDialog::kDialogTemplate_Weather, RegularAppWindow);
 			}
 
-
-			PreviewWindowImposterManager::Instance.SetEnabled(settings::dialogs::kMultiplePreviewWindows().i == 1);
 
 			// thanks to UAC and its rather lovely UIPI component on Vista+,
 			// Win32 drag-drop operations don't work when the editor is running with elevated privileges

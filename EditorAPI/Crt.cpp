@@ -2,20 +2,20 @@
 
 void* Crt::EncodePointer(void* Ptr)
 {
-	return cdeclCall<void*>(0x00897DEB, Ptr);
+	NOT_IMPLEMENTED;
 }
 
 void Crt::SetNewHandler(_PNH Handler)
 {
-	cdeclCall<void>(0x00897DBF, EncodePointer(Handler));
+	NOT_IMPLEMENTED;
 }
 
 void Crt::SetPureCallHandler(_purecall_handler Handler)
 {
-	cdeclCall<void>(0x008989DF, EncodePointer(Handler));
+	NOT_IMPLEMENTED;
 }
 
 void Crt::SetInvalidParameterHandler(_invalid_parameter_handler Handler)
 {
-	cdeclCall<void>(0x0088E5E6, EncodePointer(Handler));
+	NOT_IMPLEMENTED;
 }

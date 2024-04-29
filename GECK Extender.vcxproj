@@ -13,10 +13,6 @@
       <Configuration>Release - No CrashRpt, Attach Debugger</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release - Skip Dev Channel|Win32">
-      <Configuration>Release - Skip Dev Channel</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -27,6 +23,7 @@
     <RootNamespace>obse_plugin_example</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GECK Extender</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -48,14 +45,6 @@
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CLRSupport>false</CLRSupport>
-    <PlatformToolset>v143</PlatformToolset>
-    <EnableASAN>false</EnableASAN>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -86,10 +75,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="EnvVars.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="EnvVars.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="EnvVars.props" />
@@ -98,13 +83,10 @@
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
@@ -117,13 +99,10 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'" />
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'" />
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(BGSEEBaseLibPath_DEBUG);$(DirectXLibPath);$(CrashRptLibPath);$(BoostLibPath);$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">$(BGSEEBaseLibPath_DEBUG);$(DirectXLibPath);$(CrashRptLibPath);$(BoostLibPath);$(LibraryPath)</LibraryPath>
@@ -132,18 +111,14 @@
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SourcePath)</SourcePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">$(SourcePath)</SourcePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(BGSEEBaseIncludePath);$(XSECommonIncludePath);$(DirectXIncludePath);$(SMESundriesIncludePath);$(BoostIncludePath);$(CrashRptIncludePath);$(NETFXKitsDir)\include\um;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">$(BGSEEBaseIncludePath);$(XSECommonIncludePath);$(DirectXIncludePath);$(SMESundriesIncludePath);$(BoostIncludePath);$(CrashRptIncludePath);$(NETFXKitsDir)\include\um;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">$(BGSEEBaseIncludePath);$(XSECommonIncludePath);$(DirectXIncludePath);$(SMESundriesIncludePath);$(BoostIncludePath);$(CrashRptIncludePath);$(NETFXKitsDir)\include\um;$(IncludePath)</IncludePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SourcePath)</SourcePath>
-    <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">$(SourcePath)</SourcePath>
     <SourcePath Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">$(SourcePath)</SourcePath>
     <EnableManagedIncrementalBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</EnableManagedIncrementalBuild>
     <EnableManagedIncrementalBuild Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">false</EnableManagedIncrementalBuild>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(BGSEEBaseLibPath_RELEASE);$(DirectXLibPath);$(CrashRptLibPath);$(BoostLibPath);$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">$(BGSEEBaseLibPath_RELEASE);$(DirectXLibPath);$(CrashRptLibPath);$(BoostLibPath);$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">$(BGSEEBaseLibPath_RELEASE);$(DirectXLibPath);$(CrashRptLibPath);$(BoostLibPath);$(LibraryPath)</LibraryPath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ExecutablePath)</ExecutablePath>
-    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">$(ExecutablePath)</ExecutablePath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">$(ExecutablePath)</ExecutablePath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ExecutablePath)</ExecutablePath>
     <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">$(ExecutablePath)</ExecutablePath>
@@ -156,15 +131,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryWPath />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">
-    <LibraryWPath />
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">
     <LibraryWPath />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\obse\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\NVSE\nvse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;CS_VERSION=0x01020000;OBLIVION_VERSION=0x010201A0;CSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -185,7 +157,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ComCtl32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -206,63 +178,7 @@
     </Link>
     <PostBuildEvent>
       <Message>Installing DLL...</Message>
-      <Command>copy "$(TargetPath)" "$(OblivionPath)\Data\obse\plugins\$(TargetFileName)"
-copy "$(TargetPath)" "$(DropboxPath)\CSE Once-In-Awhile'lies\Data\OBSE\Plugins\$(TargetFileName)"
-copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Data\OBSE\Plugins\$(TargetName).pdb"
-</Command>
-    </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>cscript.exe "$(SolutionDir)\BuildIncrement.jse"</Command>
-    </PreBuildEvent>
-    <PreBuildEvent>
-      <Message>Setting build number...</Message>
-    </PreBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\obse\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;CS_VERSION=0x01020000;OBLIVION_VERSION=0x010201A0;CSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <ForcedIncludeFiles>StdAfx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalOptions>-Zm200</AdditionalOptions>
-      <StringPooling>true</StringPooling>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <UndefinePreprocessorDefinitions>
-      </UndefinePreprocessorDefinitions>
-      <Optimization>MaxSpeed</Optimization>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <OmitFramePointers>false</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>ComCtl32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ModuleDefinitionFile>
-      </ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>true</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Link>
-    <PostBuildEvent>
-      <Message>Installing DLL...</Message>
-      <Command>copy "$(TargetPath)" "$(OblivionPath)\Data\obse\plugins\$(TargetFileName)"</Command>
+      <Command>copy "$(TargetPath)" "$(NewVegasPath)\data\NVSE\plugins\$(TargetFileName)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cscript.exe "$(SolutionDir)\BuildIncrement.jse"</Command>
@@ -273,7 +189,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\obse\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\NVSE\nvse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;NDEBUG;CS_VERSION=0x01020000;OBLIVION_VERSION=0x010201A0;CSE;WAIT_FOR_DEBUGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
@@ -296,7 +212,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ComCtl32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -318,7 +234,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
     </Link>
     <PostBuildEvent>
       <Message>Installing DLL...</Message>
-      <Command>copy "$(TargetPath)" "$(OblivionPath)\Data\obse\plugins\$(TargetFileName)"</Command>
+      <Command>copy "$(TargetPath)" "$(NewVegasPath)\data\NVSE\plugins\$(TargetFileName)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cscript.exe "$(SolutionDir)\BuildIncrement.jse"</Command>
@@ -329,7 +245,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\obse\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\NVSE\nvse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_USRDLL;CS_VERSION=0x01020000;OBLIVION_VERSION=0x010201A0;CSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <PreprocessToFile>false</PreprocessToFile>
@@ -352,7 +268,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
       <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-Zm200</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ComCtl32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -373,7 +289,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
     </Link>
     <PostBuildEvent>
       <Message>Installing DLL...</Message>
-      <Command>copy "$(TargetPath)" "$(OblivionPath)\data\obse\plugins\$(TargetFileName)"</Command>
+      <Command>copy "$(TargetPath)" "$(NewVegasPath)\data\NVSE\plugins\$(TargetFileName)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cscript.exe "$(SolutionDir)\BuildIncrement.jse"</Command>
@@ -390,7 +306,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\obse\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..\NVSE\nvse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;_USRDLL;CS_VERSION=0x01020000;OBLIVION_VERSION=0x010201A0;CSE;WAIT_FOR_DEBUGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <PreprocessToFile>false</PreprocessToFile>
@@ -413,7 +329,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
       <BasicRuntimeChecks>UninitializedLocalUsageCheck</BasicRuntimeChecks>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>-Zm200</AdditionalOptions>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ComCtl32.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -434,7 +350,7 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
     </Link>
     <PostBuildEvent>
       <Message>Installing DLL...</Message>
-      <Command>copy "$(TargetPath)" "$(OblivionPath)\data\obse\plugins\$(TargetFileName)"</Command>
+      <Command>copy "$(TargetPath)" "$(NewVegasPath)\data\NVSE\plugins\$(TargetFileName)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cscript.exe "$(SolutionDir)\BuildIncrement.jse"</Command>
@@ -450,162 +366,83 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\OBSE\obse\NiTypes.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">
-      </ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="CellViewWindowOverrides.cpp" />
-    <ClCompile Include="Coda\Commands\CodaScriptCommands-BFC.cpp" />
-    <ClCompile Include="Coda\Commands\CodaScriptCommands-Form.cpp" />
-    <ClCompile Include="Coda\Commands\CodaScriptCommands-Reference.cpp" />
+    <ProjectReference Include="[BGSEEBase]\BGSEditorExtenderBase.vcxproj">
+      <Project>{414edf4a-5930-416a-b382-216b445539db}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Coda\Coda.cpp" />
-    <ClCompile Include="Achievements.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="CustomDialogProcs.cpp" />
-    <ClCompile Include="EditorAPI\Crt.cpp" />
-    <ClCompile Include="EditorAPI\TESLandTexture.cpp" />
-    <ClCompile Include="EventSinks.cpp" />
-    <ClCompile Include="EventSources.cpp" />
-    <ClCompile Include="FormUndoStack.cpp" />
-    <ClCompile Include="GlobalClipboard.cpp" />
-    <ClCompile Include="HallOfFame.cpp" />
-    <ClCompile Include="Hooks\Hooks-Events.cpp" />
-    <ClCompile Include="IMGUI\imgui.cpp" />
-    <ClCompile Include="IMGUI\imgui_demo.cpp" />
-    <ClCompile Include="IMGUI\imgui_draw.cpp" />
-    <ClCompile Include="IMGUI\imgui_tables.cpp" />
-    <ClCompile Include="IMGUI\imgui_user.cpp" />
-    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="DialogImposterManager.cpp" />
-    <ClCompile Include="MainWindowOverrides.cpp" />
-    <ClCompile Include="MiscWindowOverrides.cpp" />
-    <ClCompile Include="ObjectPaletteManager.cpp" />
-    <ClCompile Include="ObjectPrefabManager.cpp" />
-    <ClCompile Include="ObjectWindowOverrides.cpp" />
-    <ClCompile Include="Render Window\AuxiliaryViewport.cpp" />
-    <ClCompile Include="Render Window\InfoOverlayOSDLayer.cpp" />
-    <ClCompile Include="Render Window\MouseOverTooltipOSDLayer.cpp" />
-    <ClCompile Include="Render Window\PathGridUndoManager.cpp" />
-    <ClCompile Include="Render Window\RenderWindowActions.cpp" />
-    <ClCompile Include="Render Window\RenderWindowCellLists.cpp" />
-    <ClCompile Include="Render Window\RenderWindowCommon.cpp" />
-    <ClCompile Include="Render Window\RenderWindowFlyCamera.cpp" />
-    <ClCompile Include="Render Window\RenderWindowGroups.cpp" />
-    <ClCompile Include="Render Window\RenderWindowInput.cpp" />
-    <ClCompile Include="Render Window\RenderWindowLayers.cpp" />
-    <ClCompile Include="Render Window\RenderWindowManager.cpp" />
-    <ClCompile Include="Render Window\RenderWindowOSD.cpp" />
-    <ClCompile Include="Render Window\ReferenceEditorOSDLayer.cpp" />
-    <ClCompile Include="Render Window\ToolbarOSDLayer.cpp" />
-    <ClCompile Include="Serialization.cpp" />
-    <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="WorkspaceManager.cpp" />
-    <ClCompile Include="Wrappers.cpp" />
-    <ClCompile Include="EditorAPI\Archive.cpp" />
-    <ClCompile Include="EditorAPI\BaseFormComponent.cpp" />
-    <ClCompile Include="EditorAPI\BSFile.cpp" />
     <ClCompile Include="EditorAPI\BSString.cpp" />
     <ClCompile Include="EditorAPI\Core.cpp" />
-    <ClCompile Include="EditorAPI\EffectItem.cpp" />
-    <ClCompile Include="EditorAPI\EffectSetting.cpp" />
-    <ClCompile Include="EditorAPI\ExtraDataList.cpp" />
-    <ClCompile Include="EditorAPI\GameSetting.cpp" />
-    <ClCompile Include="EditorAPI\MagicItem.cpp" />
-    <ClCompile Include="EditorAPI\MagicItemForm.cpp" />
+    <ClCompile Include="EditorAPI\Crt.cpp" />
     <ClCompile Include="EditorAPI\MemoryHeap.cpp" />
-    <ClCompile Include="EditorAPI\NiClasses.cpp" />
     <ClCompile Include="EditorAPI\RTTI.cpp" />
     <ClCompile Include="EditorAPI\Script.cpp" />
-    <ClCompile Include="EditorAPI\Setting.cpp" />
-    <ClCompile Include="EditorAPI\SettingCollection.cpp" />
-    <ClCompile Include="EditorAPI\TESConditionItem.cpp" />
     <ClCompile Include="EditorAPI\TESDialog.cpp" />
     <ClCompile Include="EditorAPI\TESFile.cpp" />
     <ClCompile Include="EditorAPI\TESForm.cpp" />
-    <ClCompile Include="EditorAPI\TESIdleForm.cpp" />
-    <ClCompile Include="EditorAPI\TESNPC.cpp" />
-    <ClCompile Include="EditorAPI\TESObject.cpp" />
-    <ClCompile Include="EditorAPI\TESObjectCELL.cpp" />
-    <ClCompile Include="EditorAPI\TESObjectLAND.cpp" />
     <ClCompile Include="EditorAPI\TESObjectREFR.cpp" />
-    <ClCompile Include="EditorAPI\TESPackage.cpp" />
-    <ClCompile Include="EditorAPI\TESPathGrid.cpp" />
-    <ClCompile Include="EditorAPI\TESQuest.cpp" />
     <ClCompile Include="EditorAPI\TESRender.cpp" />
-    <ClCompile Include="EditorAPI\TESSound.cpp" />
-    <ClCompile Include="ChangeLogManager.cpp" />
-    <ClCompile Include="StdAfx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="[Common]\CLIWrapper.cpp" />
-    <ClCompile Include="[Common]\HandshakeStructs.cpp" />
-    <ClCompile Include="Hooks\Hooks-AssetSelector.cpp" />
+    <ClCompile Include="EventSinks.cpp" />
+    <ClCompile Include="EventSources.cpp" />
+    <ClCompile Include="Exports.cpp" />
     <ClCompile Include="Hooks\Hooks-Common.cpp" />
     <ClCompile Include="Hooks\Hooks-CompilerErrorDetours.cpp" />
-    <ClCompile Include="Hooks\Hooks-Dialog.cpp" />
-    <ClCompile Include="Hooks\Hooks-LOD.cpp" />
     <ClCompile Include="Hooks\Hooks-Misc.cpp" />
-    <ClCompile Include="Hooks\Hooks-Renderer.cpp" />
     <ClCompile Include="Hooks\Hooks-ScriptEditor.cpp" />
-    <ClCompile Include="Hooks\Hooks-Plugins.cpp" />
-    <ClCompile Include="PluginAPIManager.cpp" />
-    <ClCompile Include="OldCSInteropManager.cpp" />
-    <ClCompile Include="[Common]\OldCSInteropData.cpp" />
-    <ClCompile Include="Exports.cpp" />
+    <ClCompile Include="IMGUI\imgui.cpp" />
+    <ClCompile Include="IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainWindowOverrides.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="WorkspaceManager.cpp" />
+    <ClCompile Include="[Common]\CLIWrapper.cpp" />
+    <ClCompile Include="[Common]\HandshakeStructs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\SME Sundries\INIEditGUI_Res.h" />
-    <ClInclude Include="..\OBSE\obse\HavokBase.h" />
-    <ClInclude Include="..\OBSE\obse\HavokCharacters.h" />
-    <ClInclude Include="..\OBSE\obse\HavokCollision.h" />
-    <ClInclude Include="..\OBSE\obse\HavokDynamics.h" />
-    <ClInclude Include="..\OBSE\obse\HavokReflection.h" />
-    <ClInclude Include="..\OBSE\obse\HavokTypes.h" />
-    <ClInclude Include="..\OBSE\obse\NiCollision.h" />
-    <ClInclude Include="..\OBSE\obse\NiControllers.h" />
-    <ClInclude Include="..\obse\obse\NiExtraData.h" />
-    <ClInclude Include="..\obse\obse\NiGeometry.h" />
-    <ClInclude Include="..\OBSE\obse\NiHavok.h" />
-    <ClInclude Include="..\OBSE\obse\NiHavokCharacters.h" />
-    <ClInclude Include="..\OBSE\obse\NiHavokConstraints.h" />
-    <ClInclude Include="..\OBSE\obse\NiHavokObjects.h" />
-    <ClInclude Include="..\OBSE\obse\NiHavokShapes.h" />
-    <ClInclude Include="..\obse\obse\NiNodes.h" />
-    <ClInclude Include="..\obse\obse\NiObjects.h" />
-    <ClInclude Include="..\obse\obse\NiProperties.h" />
-    <ClInclude Include="..\OBSE\obse\NiRenderer.h" />
-    <ClInclude Include="..\obse\obse\NiTypes.h" />
-    <ClInclude Include="..\obse\obse\PluginAPI.h" />
-    <ClInclude Include="CellViewWindowOverrides.h" />
-    <ClInclude Include="Coda\Commands\CodaScriptCommands-BFC.h" />
-    <ClInclude Include="Coda\Commands\CodaScriptCommands-Form.h" />
-    <ClInclude Include="Coda\Commands\CodaScriptCommands-Reference.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\containers.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\GameTypes.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\NiNodes.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\NiObjects.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\NiPoint.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\NiTypes.h" />
+    <ClInclude Include="..\NVSE\nvse\nvse\PluginAPI.h" />
     <ClInclude Include="Coda\Coda.h" />
-    <ClInclude Include="Achievements.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="CustomDialogProcs.h" />
+    <ClInclude Include="EditorAPI\BaseFormComponent.h" />
+    <ClInclude Include="EditorAPI\BSString.h" />
+    <ClInclude Include="EditorAPI\Core.h" />
     <ClInclude Include="EditorAPI\Crt.h" />
-    <ClInclude Include="EditorAPI\TESLevSpell.h" />
+    <ClInclude Include="EditorAPI\ExtraData.h" />
+    <ClInclude Include="EditorAPI\ExtraDataList.h" />
+    <ClInclude Include="EditorAPI\MemoryHeap.h" />
+    <ClInclude Include="EditorAPI\RTTI.h" />
+    <ClInclude Include="EditorAPI\Script.h" />
+    <ClInclude Include="EditorAPI\TESDialog.h" />
+    <ClInclude Include="EditorAPI\TESEditorAPI.h" />
+    <ClInclude Include="EditorAPI\TESFile.h" />
+    <ClInclude Include="EditorAPI\TESForm.h" />
+    <ClInclude Include="EditorAPI\TESObjectREFR.h" />
+    <ClInclude Include="EditorAPI\TESRender.h" />
     <ClInclude Include="EventSinks.h" />
     <ClInclude Include="EventSources.h" />
-    <ClInclude Include="FormUndoStack.h" />
-    <ClInclude Include="GlobalClipboard.h" />
-    <ClInclude Include="HallOfFame.h" />
-    <ClInclude Include="Hooks\Hooks-Events.h" />
+    <ClInclude Include="Exports.h" />
+    <ClInclude Include="GECK Extender_Resource.h" />
+    <ClInclude Include="Hooks\Hooks-Common.h" />
+    <ClInclude Include="Hooks\Hooks-CompilerErrorDetours.h" />
+    <ClInclude Include="Hooks\Hooks-Misc.h" />
+    <ClInclude Include="Hooks\Hooks-ScriptEditor.h" />
     <ClInclude Include="IconFontCppHeaders\IconsFontAwesome.h" />
     <ClInclude Include="IconFontCppHeaders\IconsKenney.h" />
     <ClInclude Include="IconFontCppHeaders\IconsMaterialDesign.h" />
@@ -618,200 +455,29 @@ copy "$(TargetDir)$(TargetName).pdb" "$(DropboxPath)\CSE Once-In-Awhile'lies\Dat
     <ClInclude Include="IMGUI\imstb_truetype.h" />
     <ClInclude Include="IMGUI\stb_sprintf.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="DialogImposterManager.h" />
     <ClInclude Include="MainWindowOverrides.h" />
-    <ClInclude Include="MiscWindowOverrides.h" />
-    <ClInclude Include="ObjectPaletteManager.h" />
-    <ClInclude Include="ObjectPrefabManager.h" />
-    <ClInclude Include="ObjectWindowOverrides.h" />
-    <ClInclude Include="Render Window\AuxiliaryViewport.h" />
-    <ClInclude Include="Render Window\InfoOverlayOSDLayer.h" />
-    <ClInclude Include="Render Window\MouseOverTooltipOSDLayer.h" />
-    <ClInclude Include="Render Window\PathGridUndoManager.h" />
-    <ClInclude Include="Render Window\RenderWindowActions.h" />
-    <ClInclude Include="Render Window\RenderWindowCellLists.h" />
-    <ClInclude Include="Render Window\RenderWindowCommon.h" />
-    <ClInclude Include="Render Window\RenderWindowFlyCamera.h" />
-    <ClInclude Include="Render Window\RenderWindowGroups.h" />
-    <ClInclude Include="Render Window\RenderWindowInput.h" />
-    <ClInclude Include="Render Window\RenderWindowLayers.h" />
-    <ClInclude Include="Render Window\RenderWindowManager.h" />
-    <ClInclude Include="Render Window\RenderWindowOSD.h" />
-    <ClInclude Include="Render Window\ReferenceEditorOSDLayer.h" />
-    <ClInclude Include="Render Window\ToolbarOSDLayer.h" />
-    <ClInclude Include="Serialization.h" />
     <ClInclude Include="Settings.h" />
-    <ClInclude Include="UIManager.h" />
-    <ClInclude Include="WorkspaceManager.h" />
-    <ClInclude Include="Wrappers.h" />
-    <ClInclude Include="EditorAPI\ActorValues.h" />
-    <ClInclude Include="EditorAPI\Archive.h" />
-    <ClInclude Include="EditorAPI\BaseFormComponent.h" />
-    <ClInclude Include="EditorAPI\BirthSign.h" />
-    <ClInclude Include="EditorAPI\BSFile.h" />
-    <ClInclude Include="EditorAPI\BSString.h" />
-    <ClInclude Include="EditorAPI\BSTCaseInsensitiveStringMap.h" />
-    <ClInclude Include="EditorAPI\Core.h" />
-    <ClInclude Include="EditorAPI\MemoryHeap.h" />
-    <ClInclude Include="EditorAPI\NiClasses.h" />
-    <ClInclude Include="EditorAPI\RTTI.h" />
-    <ClInclude Include="EditorAPI\SettingCollection.h" />
-    <ClInclude Include="EditorAPI\TESClimate.h" />
-    <ClInclude Include="EditorAPI\TESCombatStyle.h" />
-    <ClInclude Include="EditorAPI\TESDialog.h" />
-    <ClInclude Include="EditorAPI\TESEditorAPI.h" />
-    <ClInclude Include="EditorAPI\EffectItem.h" />
-    <ClInclude Include="EditorAPI\EffectSetting.h" />
-    <ClInclude Include="EditorAPI\ExtraData.h" />
-    <ClInclude Include="EditorAPI\ExtraDataList.h" />
-    <ClInclude Include="EditorAPI\FaceGen.h" />
-    <ClInclude Include="EditorAPI\GameSetting.h" />
-    <ClInclude Include="EditorAPI\Magic.h" />
-    <ClInclude Include="EditorAPI\MagicItem.h" />
-    <ClInclude Include="EditorAPI\MagicItemForm.h" />
-    <ClInclude Include="EditorAPI\MagicItemObject.h" />
-    <ClInclude Include="EditorAPI\Script.h" />
-    <ClInclude Include="EditorAPI\Setting.h" />
-    <ClInclude Include="EditorAPI\TESActorBase.h" />
-    <ClInclude Include="EditorAPI\TESAmmo.h" />
-    <ClInclude Include="EditorAPI\TESClass.h" />
-    <ClInclude Include="EditorAPI\TESConditionItem.h" />
-    <ClInclude Include="EditorAPI\TESCreature.h" />
-    <ClInclude Include="EditorAPI\TESEffectShader.h" />
-    <ClInclude Include="EditorAPI\TESEyes.h" />
-    <ClInclude Include="EditorAPI\TESFaction.h" />
-    <ClInclude Include="EditorAPI\TESFile.h" />
-    <ClInclude Include="EditorAPI\TESFlora.h" />
-    <ClInclude Include="EditorAPI\TESForm.h" />
-    <ClInclude Include="EditorAPI\TESFurniture.h" />
-    <ClInclude Include="EditorAPI\TESGlobal.h" />
-    <ClInclude Include="EditorAPI\TESGrass.h" />
-    <ClInclude Include="EditorAPI\TESHair.h" />
-    <ClInclude Include="EditorAPI\TESIdleForm.h" />
-    <ClInclude Include="EditorAPI\TESKey.h" />
-    <ClInclude Include="EditorAPI\TESLandTexture.h" />
-    <ClInclude Include="EditorAPI\TESLevCreature.h" />
-    <ClInclude Include="EditorAPI\TESLevItem.h" />
-    <ClInclude Include="EditorAPI\TESLoadScreen.h" />
-    <ClInclude Include="EditorAPI\TESNPC.h" />
-    <ClInclude Include="EditorAPI\TESObject.h" />
-    <ClInclude Include="EditorAPI\TESObjectACTI.h" />
-    <ClInclude Include="EditorAPI\TESObjectANIO.h" />
-    <ClInclude Include="EditorAPI\TESObjectAPPA.h" />
-    <ClInclude Include="EditorAPI\TESObjectARMO.h" />
-    <ClInclude Include="EditorAPI\TESObjectBOOK.h" />
-    <ClInclude Include="EditorAPI\TESObjectCELL.h" />
-    <ClInclude Include="EditorAPI\TESObjectCLOT.h" />
-    <ClInclude Include="EditorAPI\TESObjectCONT.h" />
-    <ClInclude Include="EditorAPI\TESObjectDOOR.h" />
-    <ClInclude Include="EditorAPI\TESObjectLAND.h" />
-    <ClInclude Include="EditorAPI\TESObjectLIGH.h" />
-    <ClInclude Include="EditorAPI\TESObjectMISC.h" />
-    <ClInclude Include="EditorAPI\TESObjectREFR.h" />
-    <ClInclude Include="EditorAPI\TESObjectSTAT.h" />
-    <ClInclude Include="EditorAPI\TESObjectTREE.h" />
-    <ClInclude Include="EditorAPI\TESObjectWEAP.h" />
-    <ClInclude Include="EditorAPI\TESPackage.h" />
-    <ClInclude Include="EditorAPI\TESPathGrid.h" />
-    <ClInclude Include="EditorAPI\TESQuest.h" />
-    <ClInclude Include="EditorAPI\TESRace.h" />
-    <ClInclude Include="EditorAPI\TESRender.h" />
-    <ClInclude Include="EditorAPI\TESSigilStone.h" />
-    <ClInclude Include="EditorAPI\TESSkill.h" />
-    <ClInclude Include="EditorAPI\TESSoulGem.h" />
-    <ClInclude Include="EditorAPI\TESSound.h" />
-    <ClInclude Include="EditorAPI\TESSubSpace.h" />
-    <ClInclude Include="EditorAPI\TESTopic.h" />
-    <ClInclude Include="EditorAPI\TESTopicInfo.h" />
-    <ClInclude Include="EditorAPI\TESWaterForm.h" />
-    <ClInclude Include="EditorAPI\TESWeather.h" />
-    <ClInclude Include="EditorAPI\TESWorldSpace.h" />
-    <ClInclude Include="ChangeLogManager.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="VersionInfo.h" />
+    <ClInclude Include="WorkspaceManager.h" />
     <ClInclude Include="[BGSEEBase]\BGSEditorExtenderBase_Resource.h" />
     <ClInclude Include="[Common]\CLIWrapper.h" />
-    <ClInclude Include="Construction Set Extender_Resource.h" />
     <ClInclude Include="[Common]\ComponentDLLInterface.h" />
     <ClInclude Include="[Common]\HandShakeStructs.h" />
-    <ClInclude Include="Hooks\Hooks-AssetSelector.h" />
-    <ClInclude Include="Hooks\Hooks-Common.h" />
-    <ClInclude Include="Hooks\Hooks-CompilerErrorDetours.h" />
-    <ClInclude Include="Hooks\Hooks-Dialog.h" />
-    <ClInclude Include="Hooks\Hooks-LOD.h" />
-    <ClInclude Include="Hooks\Hooks-Misc.h" />
-    <ClInclude Include="Hooks\Hooks-Renderer.h" />
-    <ClInclude Include="Hooks\Hooks-ScriptEditor.h" />
-    <ClInclude Include="Hooks\Hooks-Plugins.h" />
-    <ClInclude Include="CSEInterfaceAPI.h" />
-    <ClInclude Include="PluginAPIManager.h" />
-    <ClInclude Include="OldCSInteropManager.h" />
-    <ClInclude Include="[Common]\OldCSInteropData.h" />
-    <ClInclude Include="Exports.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\[Libraries]\BGSEditorExtenderBase\[Resources]\generic.bmp" />
-    <None Include="EditorAPI\NiTMap.h" />
-    <None Include="Images\antic.bmp" />
-    <None Include="Images\automaton.bmp" />
-    <None Include="Images\bob.bmp" />
-    <None Include="Images\cake.bmp" />
-    <None Include="Images\cardinalsin.bmp" />
-    <None Include="Images\cheat.bmp" />
-    <None Include="Images\chicken.bmp" />
-    <None Include="Images\command.bmp" />
-    <None Include="Images\compart.bmp" />
-    <None Include="Images\erudite.bmp" />
-    <None Include="Images\fakevoice.bmp" />
-    <None Include="Images\fearless.bmp" />
-    <None Include="Images\fly.bmp" />
-    <None Include="Images\funnyman.bmp" />
-    <None Include="Images\heretic.bmp" />
-    <None Include="Images\jobless.bmp" />
-    <None Include="Images\lazybum.bmp" />
-    <None Include="Images\loquacious.bmp" />
-    <None Include="Images\lost.bmp" />
-    <None Include="Images\madsci.bmp" />
-    <None Include="Images\magister.bmp" />
-    <None Include="Images\omfgodrays.bmp" />
-    <None Include="Images\pedantic.bmp" />
-    <None Include="Images\powerusr.bmp" />
-    <None Include="Images\saboteur.bmp" />
-    <None Include="Images\soprano.bmp" />
-    <None Include="Images\Splash.bmp" />
-    <None Include="Images\wiseone.bmp" />
-    <None Include="Images\wtf.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\Libraries\SME Sundries\INIEditGUI_Res.rc" />
-    <ResourceCompile Include="Construction Set Extender.rc" />
-    <ResourceCompile Include="VersionInfo.rc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">
-      </ExcludedFromBuild>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CSE</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug - Attach Debugger|Win32'">CSE</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CSE</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release - Skip Dev Channel|Win32'">CSE</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release - No CrashRpt, Attach Debugger|Win32'">CSE</PreprocessorDefinitions>
-    </ResourceCompile>
+    <ResourceCompile Include="GECK Extender.rc" />
+    <ResourceCompile Include="VersionInfo.rc" />
     <ResourceCompile Include="[BGSEEBase]\BGSEditorExtenderBase.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="IMGUI\imgui.natvis" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="[BGSEEBase]\BGSEditorExtenderBase.vcxproj">
-      <Project>{414edf4a-5930-416a-b382-216b445539db}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_AssemblyInfoFilename="Construction Set Extender.rc" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_AssemblyInfoFilename="GECK Extender.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

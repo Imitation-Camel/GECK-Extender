@@ -2,7 +2,7 @@
 
 using namespace SME::MiscGunk;
 
-namespace cse
+namespace gecke
 {
 	namespace events
 	{
@@ -193,11 +193,7 @@ namespace cse
 				Node(Node),
 				EventType(EventType)
 			{
-				auto RefProp = NI_CAST(TESRender::GetExtraData(Node, "REF"), TESObjectExtraData);
-				if (RefProp)
-					ParentRef = RefProp->refr;
-				else
-					ParentRef = nullptr;
+				NOT_IMPLEMENTED;
 			}
 
 			BSFadeNodeDrawEventSource::BSFadeNodeDrawEventSource(UInt32 EventType) :

@@ -249,6 +249,7 @@ namespace bgsee
 		{
 			kExtenderParentEditor_Unknown	=	0,
 			kExtenderParentEditor_TES4CS	=	1,
+			kExtenderParentEditor_FONVGECK	=	2,
 			kExtenderParentEditor__MAX
 		};
 

@@ -15,12 +15,11 @@
 #define ADD_BASIC_SINK_TO_SOURCE(sink, source)				source.AddSink(&sink##EventSink::Instance)
 #define REMOVE_BASIC_SINK_FROM_SOURCE(sink, source)			source.RemoveSink(&sink##EventSink::Instance)
 
-namespace cse
+namespace gecke
 {
 	namespace events
 	{
 		DECLARE_BASIC_EVENT_SINK(DestroyCustomDialogs);
-		DECLARE_BASIC_EVENT_SINK(DataHandlerClearData);
 		DECLARE_BASIC_EVENT_SINK(PostPluginSaveTasks);
 		DECLARE_BASIC_EVENT_SINK(PrePluginLoadTasks);
 		DECLARE_BASIC_EVENT_SINK(PostPluginLoadTasks);

@@ -1041,8 +1041,8 @@ namespace bgsee
 	{
 		if (!AllHooksValid)
 		{
-			BGSEEUI->MsgBoxE("Color themes could not be enabled since the necessary functions were not found in this version of the Construction Set executable!\n\n"
-							"Please ensure that you are running the visual styles-enabled version of the Construction Set executable.");
+			BGSEEUI->MsgBoxE("Color themes could not be enabled since the necessary functions were not found in this version of the editor executable!\n\n"
+							"Please ensure that you are running the visual styles-enabled version of the editor executable.");
 			return;
 		}
 		else if (IsEnabled())

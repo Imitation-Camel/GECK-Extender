@@ -1,6 +1,6 @@
 #pragma once
 
-namespace cse
+namespace gecke
 {
 	namespace uiManager
 	{
@@ -11,7 +11,7 @@ namespace cse
 			T		ExtraData;
 		};
 
-
+#if 0
 		class FilterableFormListManager
 		{
 		public:
@@ -177,6 +177,7 @@ namespace cse
 
 			static DeferredComboBoxController Instance;
 		};
+#endif
 
 
 		void Initialize(void);

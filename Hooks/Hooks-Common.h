@@ -2,10 +2,9 @@
 #include "../[Common]/CLIWrapper.h"
 #include "../[Common]/HandshakeStructs.h"
 #include "../UIManager.h"
-#include "../Construction Set Extender_Resource.h"
 #include "../Exports.h"
 
-namespace cse
+namespace gecke
 {
 	namespace hooks
 	{

@@ -1,12 +1,8 @@
 #include "Coda.h"
-#include "Achievements.h"
 #include "PluginAPIManager.h"
 
-#include "Commands\CodaScriptCommands-Form.h"
-#include "Commands\CodaScriptCommands-Reference.h"
-#include "Commands\CodaScriptCommands-BFC.h"
 
-namespace cse
+namespace gecke
 {
 	namespace script
 	{
@@ -59,9 +55,6 @@ namespace cse
 			Input.RunInBackground = RunInBackground == "1" ? true : false;
 
 			CODAVM->RunScript(Input, Output);
-
-			if (Output.Success)
-				BGSEEACHIEVEMENTS->Unlock(achievements::kAutomaton);
 		}
 
 		DEFINE_BGSEECONSOLECMD(RunCodaScript, 2);
@@ -70,13 +63,8 @@ namespace cse
 		{
 			bgsee::script::CodaScriptCommandRegistrar::ListT ScriptCommands;
 
-			PluginAPIManager::Instance.ConsumeScriptInterface(ScriptCommands);
-			ScriptCommands.push_back(commands::form::GetRegistrar());
-			ScriptCommands.push_back(commands::reference::GetRegistrar());
-			ScriptCommands.push_back(commands::baseFormComponent::GetRegistrar());
-
-			bool ComponentInitialized = bgsee::script::CodaScriptVM::Initialize(bgsee::ResourceLocation(CSE_CODADEPOT),
-														"https://cs.uesp.net/wiki/",
+			bool ComponentInitialized = bgsee::script::CodaScriptVM::Initialize(bgsee::ResourceLocation(GECKE_CODADEPOT),
+														"https://geckwiki.com/",
 														BGSEEMAIN->INIGetter(),
 														BGSEEMAIN->INISetter(),
 														ScriptCommands);

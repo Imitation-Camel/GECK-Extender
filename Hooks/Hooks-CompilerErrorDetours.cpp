@@ -4,55 +4,51 @@
 #pragma warning(push)
 #pragma warning(disable: 4005 4748)
 
-namespace cse
+namespace gecke
 {
 	namespace hooks
 	{
 		UInt32 ScriptCompileResultBuffer = 0;	// saves the result of a compile operation so as to allow it to go on unhindered
 
-		_DefineNopHdlr(RidScriptErrorMessageBox, 0x004FFFEC, 20);
-		_DefineNopHdlr(RidUnknownFunctionCodeMessage, 0x0050310C, 5);
-		_DefineHookHdlr(RerouteScriptErrors, 0x004FFF9C);
-		_DefineHookHdlr(CompilerPrologReset, 0x00503330);
-		_DefineHookHdlr(CompilerEpilogCheck, 0x0050341F);
-		_DefineHookHdlr(ParseScriptLineOverride, 0x00503401);
-		_DefineHookHdlr(CheckLineLengthLineCount, 0x0050013B);
-		_DefineHookHdlr(ResultScriptErrorNotification, 0x005035EE);
-		_DefineHookHdlr(MaxScriptSizeExceeded, 0x005031DB);
-		_DefineHookHdlr(PrintCompilerErrorToConsoleOverride, 0x00500001 + 5);	// NOTE: since OBSE actually fixes a bug at this location by moving the entire block of code starting at that address
-																				// by 5 bytes (the extra bytes eats into the alignment bytes immediately following the function, so there is no other displacement to RVAs that follow)
-																				// so, we need to account for this change in our hook
+		_DefineNopHdlr(RidUnknownFunctionCodeMessage, 0x005C94A8, 5);
+		_DefineHookHdlr(RerouteScriptErrors, 0x005C578D);
+		_DefineHookHdlr(CompilerPrologReset, 0x005C96E0);
+		_DefineHookHdlr(CompilerEpilogCheck, 0x005C97CF);
+		_DefineHookHdlr(ParseScriptLineOverride, 0x005C97B7);
+		_DefineHookHdlr(CheckLineLengthLineCount, 0x005C5929);
+		_DefineHookHdlr(ResultScriptErrorNotification, 0x005C99AC);
+		_DefineHookHdlr(MaxScriptSizeExceeded, 0x005C92FF);
 
 		// ERROR HANDLERS
 																		//  f_ScriptBuffer__ConstructLineBuffers
-		DefineCompilerErrorOverrideHook(0x00502781, 0x00502791, 0xC)
-		DefineCompilerErrorOverrideHook(0x00502813, 0x005027AD, 0xC)
-		DefineCompilerErrorOverrideHook(0x005027D3, 0x00502824, 0xC)
-		DefineCompilerErrorOverrideHook(0x005028B5, 0x00502889, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C8AD2, 0x005C8B05, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C8B56, 0x005C8B21, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C8B41, 0x005C8B67, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C8C13, 0x005C8BCB, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C8BF9, 0x005C8C27, 0x8)
 																		// f_ScriptCompiler__CheckSyntax
-		DefineCompilerErrorOverrideHook(0x00500B44, 0x00500B4C, 0x8)	// Mismatching quotes check - this one needs to return immediately , will CTD otherwise
-		DefineCompilerErrorOverrideHook(0x00500B5D, 0x00500A7E, 0x8)
-		DefineCompilerErrorOverrideHook(0x00500B76, 0x00500A8B, 0x8)
-		DefineCompilerErrorOverrideHook(0x00500B8C, 0x00500AAB, 0xC)
-		DefineCompilerErrorOverrideHook(0x00500BBE, 0x00500B11, 0x8)
+		// DefineCompilerErrorOverrideHook(0x00500B44, 0x00500B4C, 0x8)	// Mismatching quotes check - this one needs to return immediately , will CTD otherwise
+		DefineCompilerErrorOverrideHook(0x005C633B, 0x005C6261, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C6354, 0x005C626E, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C636A, 0x005C628C, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C639C, 0x005C6309, 0x8)
 
-		DefineCompilerErrorOverrideHook(0x00500BA5, 0x00500B11, 0x8)
-		DefineCompilerErrorOverrideHook(0x00500C09, 0x00500C18, 0xC)
-		DefineCompilerErrorOverrideHook(0x00500C81, 0x00500CB6, 0xC)
-		DefineCompilerErrorOverrideHook(0x00500CA7, 0x00500CB6, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C6383, 0x005C62EF, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C63E7, 0x005C63F6, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C645F, 0x005C6494, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C6485, 0x005C6494, 0x8)
 																		// f_ScriptBuffer__ConstructRefVariables
-		DefineCompilerErrorOverrideHook(0x00500669, 0x00500676, 0xC)
-		DefineCompilerErrorOverrideHook(0x0050068F, 0x0050069E, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C5DAD, 0x005C5DBA, 0xC)
+		DefineCompilerErrorOverrideHook(0x005C5DD3, 0x005C5DE2, 0xC)
 																		// f_ScriptCompiler__CheckScriptBlockStructure
-		DefineCompilerErrorOverrideHook(0x00500262, 0x0050024F, 0x8)
-		DefineCompilerErrorOverrideHook(0x0050027D, 0x0050024F, 0x8)
-		DefineCompilerErrorOverrideHook(0x00500298, 0x0050024F, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C5A25, 0x005C5A13, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C5A3F, 0x005C5A13, 0x8)
+		DefineCompilerErrorOverrideHook(0x005C5A59, 0x005C5A13, 0x8)
 																		// f_ScriptBuffer__CheckReferencedObjects
-		DefineCompilerErrorOverrideHook(0x005001DC, 0x005001C9, 0xC)
+		//DefineCompilerErrorOverrideHook(0x005C59AC, 0x005001C9, 0xC) // this needs a custom hook as we need to spill eax to the stack
 
 		void PatchCompilerErrorDetours()
 		{
-			_MemHdlr(RidScriptErrorMessageBox).WriteNop();
 			_MemHdlr(RidUnknownFunctionCodeMessage).WriteNop();
 			_MemHdlr(RerouteScriptErrors).WriteJump();
 			_MemHdlr(CompilerPrologReset).WriteJump();
@@ -61,32 +57,28 @@ namespace cse
 			_MemHdlr(CheckLineLengthLineCount).WriteJump();
 			_MemHdlr(ResultScriptErrorNotification).WriteJump();
 			_MemHdlr(MaxScriptSizeExceeded).WriteJump();
-			_MemHdlr(PrintCompilerErrorToConsoleOverride).WriteJump();
 
-			GetErrorMemHdlr(0x00502781).WriteJump();
-			GetErrorMemHdlr(0x00502813).WriteJump();
-			GetErrorMemHdlr(0x005027D3).WriteJump();
-			GetErrorMemHdlr(0x005028B5).WriteJump();
+			GetErrorMemHdlr(0x005C8AD2).WriteJump();
+			GetErrorMemHdlr(0x005C8B56).WriteJump();
+			GetErrorMemHdlr(0x005C8B41).WriteJump();
+			GetErrorMemHdlr(0x005C8BF9).WriteJump();
 
-			GetErrorMemHdlr(0x00500B44).WriteJump();
-			GetErrorMemHdlr(0x00500B5D).WriteJump();
-			GetErrorMemHdlr(0x00500B76).WriteJump();
-			GetErrorMemHdlr(0x00500B8C).WriteJump();
-			GetErrorMemHdlr(0x00500BBE).WriteJump();
+			GetErrorMemHdlr(0x005C633B).WriteJump();
+			GetErrorMemHdlr(0x005C6354).WriteJump();
+			GetErrorMemHdlr(0x005C636A).WriteJump();
+			GetErrorMemHdlr(0x005C639C).WriteJump();
 
-			GetErrorMemHdlr(0x00500BA5).WriteJump();
-			GetErrorMemHdlr(0x00500C09).WriteJump();
-			GetErrorMemHdlr(0x00500C81).WriteJump();
-			GetErrorMemHdlr(0x00500CA7).WriteJump();
+			GetErrorMemHdlr(0x005C6383).WriteJump();
+			GetErrorMemHdlr(0x005C63E7).WriteJump();
+			GetErrorMemHdlr(0x005C645F).WriteJump();
+			GetErrorMemHdlr(0x005C6485).WriteJump();
 
-			GetErrorMemHdlr(0x00500669).WriteJump();
-			GetErrorMemHdlr(0x0050068F).WriteJump();
+			GetErrorMemHdlr(0x005C5DAD).WriteJump();
+			GetErrorMemHdlr(0x005C5DD3).WriteJump();
 
-			GetErrorMemHdlr(0x00500262).WriteJump();
-			GetErrorMemHdlr(0x0050027D).WriteJump();
-			GetErrorMemHdlr(0x00500298).WriteJump();
-
-			GetErrorMemHdlr(0x005001DC).WriteJump();
+			GetErrorMemHdlr(0x005C5A25).WriteJump();
+			GetErrorMemHdlr(0x005C5A3F).WriteJump();
+			GetErrorMemHdlr(0x005C5A59).WriteJump();
 		}
 
 		void __stdcall DoRerouteScriptErrorsHook(UInt32 Line, const char* Message)
@@ -105,13 +97,12 @@ namespace cse
 		#define _hhName		RerouteScriptErrors
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x004FFFA5);
+			_hhSetVar(Retn, 0x005C5795);
 			__asm
 			{
-				mov     [esp + 0x18], ebx
-				mov     [esp + 0x1C], bx
+				mov     dword ptr [esp+14h], 0
 
-				lea     edx, [esp + 0x20]
+				lea     edx, [esp + 0x1C]
 				pushad
 				push	edx
 				push	[esi + 0x1C]
@@ -122,25 +113,12 @@ namespace cse
 			}
 		}
 
-		#define _hhName		CompilerEpilogCheck
-		_hhBegin()
-		{
-			_hhSetVar(Retn, 0x00503424);
-			_hhSetVar(Call, 0x00500190);
-			__asm
-			{
-				call	_hhGetVar(Call)
-				mov		eax, ScriptCompileResultBuffer
-
-				jmp		_hhGetVar(Retn)
-			}
-		}
 		UInt32	MaxScriptSizeExceeded = 0;
 
 		#define _hhName		CompilerPrologReset
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x00503336);
+			_hhSetVar(Retn, 0x005C96E6);
 			__asm
 			{
 				mov		ScriptCompileResultBuffer, 1
@@ -159,12 +137,27 @@ namespace cse
 			}
 		}
 
+		#define _hhName		CompilerEpilogCheck
+		_hhBegin()
+		{
+			_hhSetVar(Retn, 0x005C97D4);
+			_hhSetVar(Call, 0x005C5980);
+			__asm
+			{
+				call	_hhGetVar(Call)
+				mov		eax, ScriptCompileResultBuffer
+
+				jmp		_hhGetVar(Retn)
+			}
+		}
+		
+
 		#define _hhName		ParseScriptLineOverride
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x0050340A);
-			_hhSetVar(Call, 0x005028D0);
-			_hhSetVar(Exit, 0x005033BE);
+			_hhSetVar(Retn, 0x005C97C0);
+			_hhSetVar(Call, 0x005C8C40);
+			_hhSetVar(Exit, 0x005C9779);
 			__asm
 			{
 				call	_hhGetVar(Call)
@@ -187,7 +180,7 @@ namespace cse
 		#define _hhName		CheckLineLengthLineCount
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x00500143);
+			_hhSetVar(Retn, 0x005C5930);
 			__asm
 			{
 				mov		eax, [esp + 0x18]
@@ -210,8 +203,8 @@ namespace cse
 		#define _hhName		ResultScriptErrorNotification
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x005035F3);
-			_hhSetVar(Call, 0x00503330);
+			_hhSetVar(Retn, 0x005C99B1);
+			_hhSetVar(Call, 0x005C96E0);
 			__asm
 			{
 				mov		TESScriptCompiler::PreventErrorDetours, 1
@@ -233,26 +226,11 @@ namespace cse
 		#define _hhName		MaxScriptSizeExceeded
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x00502A7C);
+			_hhSetVar(Retn, 0x005C8DE3);
 			__asm
 			{
 				mov		MaxScriptSizeExceeded, 1
-				push	0x0094AD6C
-				jmp		_hhGetVar(Retn)
-			}
-		}
-
-		#define _hhName		PrintCompilerErrorToConsoleOverride
-		_hhBegin()
-		{
-			_hhSetVar(Retn, 0x00500006 + 5);
-			_hhSetVar(Call, 0x00403490);
-			__asm
-			{
-				test	TESScriptCompiler::PrintErrorsToConsole, 1
-				jz		SKIP
-				call	_hhGetVar(Call)
-			SKIP:
+				push	0x00D61170
 				jmp		_hhGetVar(Retn)
 			}
 		}

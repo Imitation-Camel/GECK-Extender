@@ -1,7 +1,7 @@
-# Construction Set Extender
+# GECK Extender
 
-The Construction Set Extender is an [OBSE](https://www.nexusmods.com/oblivion/mods/37952) plugin that 
-enhances the [TES4 Construction Set](https://www.nexusmods.com/oblivion/mods/11367) by fixing various bugs and adding new tools.
+The GECK Extender is an [NVSE](https://github.com/xNVSE/NVSE) plugin that 
+enhances the [GECK](https://geckwiki.com/index.php?title=Garden_of_Eden_Creation_Kit) by fixing various bugs and adding new tools.
 
 ## Download
-[Nexus Mods (Oblivion)](https://www.nexusmods.com/oblivion/mods/36370/)
+[Nexus Mods (Fallout New Vegas)](https://www.nexusmods.com/newvegas/mods/64888)

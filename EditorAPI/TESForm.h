@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BaseFormComponent.h"
-#include "BSTCaseInsensitiveStringMap.h"
 
 //	EditorAPI: TESForm class.
 //	A number of class definitions are directly derived from the COEF API; Credit to JRoush for his comprehensive decoding
@@ -24,35 +23,14 @@ class   TESFile;
 class   RecordInfo;
 class   TESObjectREFR;
 class	TESForm;
-class	FormCrossReferenceData;
-
-typedef tList<FormCrossReferenceData>  FormCrossReferenceListT;
-
-// replaces the vanilla cross-reference data to add reference counting
-class FormCrossReferenceData
-{
-	TESForm*		Form;
-	UInt32			Count;
-public:
-	void			Initialize(TESForm* Form);
-	UInt32			GetReferenceCount() const;
-	UInt32			IncrementRefCount();
-	UInt32			DecrementRefCount();
-	TESForm*		GetForm() const;
-
-	static FormCrossReferenceData*		CreateInstance(TESForm* Reference, bool IncrementRefCount = true);
-	void								DeleteInstance();
-	static FormCrossReferenceData*		LookupFormInCrossReferenceList(FormCrossReferenceListT* CrossReferenceList, TESForm* CrossReferencedForm);
-};
 
 // Used by the built-in revision-control in the CS, which seems to be disabled in the public version
 // This struct is public (not a subclass of TESForm) because it is also used by TESFile
-// 04
+// 08
 struct TrackingData
 {
-	UInt16  date;               // 00 low byte is day of month, high byte is number of months with 1 = Jan. 2003 (Decembers are a little weird)
-	UInt8   lastUser;           // 02 userID that last had this form checked out
-	UInt8   currentUser;        // 03 userID that has this form checked out
+	UInt32		vcMasterFormID;		// 00 - Version control 1 (looks to be a refID inside the Version Control master)
+	UInt32		vcRevision;			// 04
 };
 
 // 24
@@ -63,79 +41,129 @@ public:
 
 	enum FormType
 	{
-		kFormType_None          = 0x00,
+		kFormType_None = 0,					// 00
 		kFormType_TES4,
 		kFormType_Group,
 		kFormType_GMST,
-		kFormType_Global,
-		kFormType_Class,
-		kFormType_Faction,
-		kFormType_Hair,
-		kFormType_Eyes          = 0x08,
-		kFormType_Race,
-		kFormType_Sound,
-		kFormType_Skill,
-		kFormType_EffectSetting,
+		kFormType_BGSTextureSet,
+		kFormType_BGSMenuIcon,
+		kFormType_TESGlobal,
+		kFormType_TESClass,
+		kFormType_TESFaction,					// 08
+		kFormType_BGSHeadPart,
+		kFormType_TESHair,
+		kFormType_TESEyes,
+		kFormType_TESRace,
+		kFormType_TESSound,
+		kFormType_BGSAcousticSpace,
+		kFormType_TESSkill,
+		kFormType_EffectSetting,					// 10
 		kFormType_Script,
-		kFormType_LandTexture,
-		kFormType_Enchantment,
-		kFormType_Spell         = 0x10,
-		kFormType_BirthSign,
-		kFormType_Activator     = 0x12,
-		kFormType_Apparatus     = 0x13,
-		kFormType_Armor         = 0x14,
-		kFormType_Book          = 0x15,
-		kFormType_Clothing      = 0x16,
-		kFormType_Container     = 0x17,
-		kFormType_Door          = 0x18,
-		kFormType_Ingredient    = 0x19,
-		kFormType_Light         = 0x1A,
-		kFormType_Misc          = 0x1B,
-		kFormType_Static        = 0x1C,
-		kFormType_Grass         = 0x1D,
-		kFormType_Tree          = 0x1E,
-		kFormType_Flora         = 0x1F,
-		kFormType_Furniture     = 0x20,
-		kFormType_Weapon        = 0x21,
-		kFormType_Ammo          = 0x22,
-		kFormType_NPC           = 0x23,
-		kFormType_Creature      = 0x24,
-		kFormType_LeveledCreature,
-		kFormType_SoulGem       = 0x26,
-		kFormType_Key           = 0x27,
-		kFormType_AlchemyItem   = 0x28,
-		kFormType_SubSpace,
-		kFormType_SigilStone,
-		kFormType_LeveledItem,
-		kFormType_SNDG,
-		kFormType_Weather,
-		kFormType_Climate,
-		kFormType_Region,
-		kFormType_Cell          = 0x30,
-		kFormType_REFR,
-		kFormType_ACHR,
-		kFormType_ACRE,
-		kFormType_PathGrid,
-		kFormType_WorldSpace,
-		kFormType_Land,
+		kFormType_TESLandTexture,
+		kFormType_EnchantmentItem,
+		kFormType_SpellItem,
+		kFormType_TESObjectACTI,
+		kFormType_BGSTalkingActivator,
+		kFormType_BGSTerminal,
+		kFormType_TESObjectARMO,					// 18	inv object
+		kFormType_TESObjectBOOK,						// 19	inv object
+		kFormType_TESObjectCLOT,					// 1A	inv object
+		kFormType_TESObjectCONT,
+		kFormType_TESObjectDOOR,
+		kFormType_IngredientItem,				// 1D	inv object
+		kFormType_TESObjectLIGH,					// 1E	inv object
+		kFormType_TESObjectMISC,						// 1F	inv object
+		kFormType_TESObjectSTAT,					// 20
+		kFormType_BGSStaticCollection,
+		kFormType_BGSMovableStatic,
+		kFormType_BGSPlaceableWater,
+		kFormType_TESGrass,
+		kFormType_TESObjectTREE,
+		kFormType_TESFlora,
+		kFormType_TESFurniture,
+		kFormType_TESObjectWEAP,					// 28	inv object
+		kFormType_TESAmmo,						// 29	inv object
+		kFormType_TESNPC,						// 2A
+		kFormType_TESCreature,					// 2B
+		kFormType_TESLevCreature,			// 2C
+		kFormType_TESLevCharacter,			// 2D
+		kFormType_TESKey,						// 2E	inv object
+		kFormType_AlchemyItem,				// 2F	inv object
+		kFormType_BGSIdleMarker,				// 30
+		kFormType_BGSNote,						// 31	inv object
+		kFormType_BGSConstructibleObject,		// 32	inv object
+		kFormType_BGSProjectile,
+		kFormType_TESLevItem,				// 34	inv object
+		kFormType_TESWeather,
+		kFormType_TESClimate,
+		kFormType_TESRegion,
+		kFormType_NavMeshInfoMap,						// 38
+		kFormType_TESObjectCELL,
+		kFormType_TESObjectREFR,				// 3A
+		kFormType_Character,						// 3B
+		kFormType_Creature,						// 3C
+		kFormType_MissileProjectile,						// 3D
+		kFormType_GrenadeProjectile,						// 3E
+		kFormType_BeamProjectile,						// 3F
+		kFormType_FlameProjectile,						// 40
+		kFormType_TESWorldSpace,
+		kFormType_TESObjectLAND,
+		kFormType_NavMesh,
 		kFormType_TLOD,
-		kFormType_Road          = 0x38,
-		kFormType_Topic,
-		kFormType_TopicInfo,
-		kFormType_Quest,
-		kFormType_Idle,
-		kFormType_Package,
-		kFormType_CombatStyle,
-		kFormType_LoadScreen,
-		kFormType_LeveledSpell  = 0x40,
-		kFormType_AnimObject,
-		kFormType_WaterForm,
-		kFormType_EffectShader,
-		kFormType_TOFT          = 0x44,
-		kFormType__MAX          = 0x45
+		kFormType_TESTopic,
+		kFormType_TESTopicInfo,
+		kFormType_TESQuest,
+		kFormType_TESIdleForm,						// 48
+		kFormType_TESPackage,
+		kFormType_TESCombatStyle,
+		kFormType_TESLoadScreen,
+		kFormType_TESLevSpell,
+		kFormType_TESObjectANIO,
+		kFormType_TESWaterForm,
+		kFormType_TESEffectShader,
+		kFormType_TOFT,						// 50	table of Offset (see OffsetData in Worldspace)
+		kFormType_BGSExplosion,
+		kFormType_BGSDebris,
+		kFormType_TESImageSpace,
+		kFormType_TESImageSpaceModifier,
+		kFormType_BGSListForm,					// 55
+		kFormType_BGSPerk,
+		kFormType_BGSBodyPartData,
+		kFormType_BGSAddonNode,				// 58
+		kFormType_ActorValueInfo,
+		kFormType_BGSRadiationStage,
+		kFormType_BGSCameraShot,
+		kFormType_BGSCameraPath,
+		kFormType_BGSVoiceType,
+		kFormType_BGSImpactData,
+		kFormType_BGSImpactDataSet,
+		kFormType_TESObjectARMA,						// 60
+		kFormType_BGSEncounterZone,
+		kFormType_BGSMessage,
+		kFormType_BGSRagdoll,
+		kFormType_DOBJ,
+		kFormType_BGSLightingTemplate,
+		kFormType_BGSMusicType,
+		kFormType_TESObjectIMOD,					// 67	inv object
+		kFormType_TESReputation,				// 68
+		kFormType_ContinuousBeamProjectile,						// 69 Continuous Beam
+		kFormType_TESRecipe,
+		kFormType_TESRecipeCategory,
+		kFormType_TESCasinoChips,				// 6C	inv object
+		kFormType_TESCasino,
+		kFormType_TESLoadScreenType,
+		kFormType_MediaSet,
+		kFormType_MediaLocationController,	// 70
+		kFormType_TESChallenge,
+		kFormType_TESAmmoEffect,
+		kFormType_TESCaravanCard,				// 73	inv object
+		kFormType_TESCaravanMoney,				// 74	inv object
+		kFormType_TESCaravanDeck,
+		kFormType_BGSDehydrationStage,
+		kFormType_BGSHungerStage,
+		kFormType_BGSSleepDeprevationStage,	// 78
+		kFormType__MAX
 	};
-
-	static const char* FormTypeIDLongNames[kFormType__MAX];
 
 	enum FormFlags
 	{
@@ -187,33 +215,13 @@ public:
 	bool							IsVWD() const;
 	bool							IsInitiallyDisabled() const;
 
+	bool							UpdateUsageInfo();
 	bool							SetEditorID(const char* EditorID);
 	TESFile*						GetOverrideFile(int Index) const;
-	void							MarkAsTemporary();
-	void							SetFormID(UInt32 FormID, bool Unk02 = true);	// arg2=true to reserve formid from datahandler ?
 
-	void							AddCrossReference(TESForm* Form);
-	void							RemoveCrossReference(TESForm* Form);
-	FormCrossReferenceListT*		GetCrossReferenceList(bool CreateNew = true);
-	void							CleanupCrossReferenceList();
-	void							PopulateCrossReferenceListView(HWND ListView);
-
-	bool							UpdateUsageInfo();
 	void							SetFromActiveFile(bool State);
 	bool							GetFromActiveFile() const;
 	void							SetDeleted(bool State);
-	void							SetQuestItem(bool State);
-	void							CopyFrom(TESForm* Form);
-	bool							CompareTo(TESForm* Form);
-	bool							LoadForm(TESFile* File);
-	bool							SaveForm(TESFile* File);				// saves an empty record for deleted forms
-	bool							SaveFormRecord(TESFile* File);
-	void							LinkForm();								// internally referred to as InitItem
-	const char*						GetTypeIDString(void);
-	void							GetDataFromDialog(HWND Dialog);
-	void							SetDataInDialog(HWND Dialog);
-	void							SetInitiallyDisabled(bool State);
-	void							SetVWD(bool State);
 
 	static TESForm*					CreateInstance(UInt8 TypeID);
 	void							DeleteInstance();
@@ -221,11 +229,6 @@ public:
 	static TESForm*					LookupByFormID(UInt32 FormID);
 	static TESForm*					LookupByEditorID(const char* EditorID);
 	static const char*				GetFormTypeIDLongName(UInt8 TypeID);
-	static TESForm*					CreateTemporaryCopy(TESForm* Source, bool CopyModifiedState = true);
-
-	static FormTypeInfo*																			FormTypeInfoTable;
-	static cseOverride::BSTCaseInsensitiveStringMap<TESForm*>*		EditorIDMap;
-	static cseOverride::NiTMapBase<UInt32, TESForm*>*					FormIDMap;
 };
 STATIC_ASSERT(sizeof(TESForm) == 0x24);
 
@@ -242,8 +245,6 @@ class TESFormIDListView : public TESForm
 public:
 	// no additional members
 
-	// methods
-	void							RefreshFormList(HWND ListView);
 };
 STATIC_ASSERT(sizeof(TESFormIDListView) == 0x24);
 

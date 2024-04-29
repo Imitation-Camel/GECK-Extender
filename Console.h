@@ -1,17 +1,9 @@
 #pragma once
 
-namespace cse
+namespace gecke
 {
 	namespace console
 	{
-		class ConsoleWarningRegistrar : public bgsee::ConsoleWarningRegistrar
-		{
-		public:
-			virtual ~ConsoleWarningRegistrar();
-
-			virtual void						operator()(bgsee::ConsoleWarningManager* Manager);
-		}; 
-
 		void Initialize(void);
 
 		extern bool		Initialized;

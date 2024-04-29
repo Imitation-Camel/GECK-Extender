@@ -619,21 +619,21 @@ namespace bgsee
 	{
 		"xSE",
 		"OBSE",
-		"SKSE"
+		"NVSE",
 	};
 
 	static const char*	kParentEditorLongName[] =
 	{
 		"BGSEditor",
 		"TESConstructionSet",
-		"CreationKit"
+		"Geck"
 	};
 
 	static const char*	kParentEditorShortName[] =
 	{
 		"BGSE",
 		"CS",
-		"CK"
+		"GECK",
 	};
 
 	Main::~Main()

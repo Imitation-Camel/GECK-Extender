@@ -1,8 +1,10 @@
 #pragma once
 
+class BSRenderedTexture;
+
 // quite clunky and can be done better with templates
 // too late to change it now, hooray for technical debt!
-namespace cse
+namespace gecke
 {
 	namespace events
 	{

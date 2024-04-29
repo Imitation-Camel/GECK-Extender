@@ -1,6 +1,6 @@
 #include "CLIWrapper.h"
 
-namespace cse
+namespace gecke
 {
 	namespace cliWrapper
 	{
@@ -29,7 +29,7 @@ namespace cse
 			kComponentDLL__MAX
 		};
 
-		bool cliWrapper::ImportInterfaces(const OBSEInterface * obse)
+		bool cliWrapper::ImportInterfaces(const NVSEInterface * obse)
 		{
 			SetErrorMode(0);
 			std::string DLLName = "";

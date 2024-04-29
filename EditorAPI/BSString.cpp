@@ -3,18 +3,22 @@
 
 bool BSString::Set(const char* string, SInt16 size)   // size determines allocated storage? 0 to allocate automatically
 {
-	return thisCall<bool>(0x004051E0, this, string, size);
+	return thisCall<bool>(0x00405B40, this, string, size);
 }
 
 void BSString::Clear()
 {
-	thisCall<UInt32>(0x004053D0, this);
+	thisCall<UInt32>(0x0040CBF0, this);
 }
 
 SInt16 BSString::Size() const
 {
-	return thisCall<SInt16>(0x0040BAD0, this);
+	if (m_dataLen == 0xFFFF)
+		return strlen(m_data);
+	else
+		return m_dataLen;
 }
+
 SInt16 BSString::Compare(const char* string, bool ignoreCase)
 {
 	if (ignoreCase)
@@ -25,8 +29,8 @@ SInt16 BSString::Compare(const char* string, bool ignoreCase)
 
 BSString* BSString::CreateInstance(const char* String)
 {
-	BSString* NewInstance = (BSString*)FormHeap_Allocate(sizeof(BSString));
-	thisCall<UInt32>(0x00497900, NewInstance, String);
+	BSString* NewInstance = (BSString*)gecke_overrides::FormHeap_Allocate(sizeof(BSString));
+	thisCall<UInt32>(0x004070F0, NewInstance, String);
 	return NewInstance;
 }
 
@@ -34,5 +38,5 @@ void BSString::DeleteInstance(bool ReleaseMemory)
 {
 	Clear();
 	if (ReleaseMemory)
-		FormHeap_Free(this);
+		gecke_overrides::FormHeap_Free(this);
 }

@@ -3,7 +3,7 @@
 #include "[BGSEEBase]\Script\CodaVM.h"
 #include "[BGSEEBase]\Script\Commands\CodaScriptCommand.h"
 
-namespace cse
+namespace gecke
 {
 	namespace script
 	{

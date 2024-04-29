@@ -1,6 +1,6 @@
 #include "Hooks-Common.h"
 
-namespace cse
+namespace gecke
 {
 	namespace hooks
 	{

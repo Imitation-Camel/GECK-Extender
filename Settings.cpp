@@ -1,6 +1,6 @@
 #include "Settings.h"
 
-namespace cse
+namespace gecke
 {
 	namespace settings
 	{

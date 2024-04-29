@@ -16,42 +16,26 @@ class	TESObjectREFR;
 class	TESGlobal;
 class	TESObjectLAND;
 
-// 14
+// 20
 class BaseExtraList
 {
 public:
 	// members
 	//     /*00*/ void**			vtbl
 	/*04*/ BSExtraData*				extraList;				// LL of extra data nodes
-	/*08*/ UInt8					extraTypes[0x0C];		// if a bit is set, then the extralist should contain that extradata
+	/*08*/ UInt8					extraTypes[0x15];		// if a bit is set, then the extralist should contain that extradata
 															// bits are numbered starting from the lsb
+	/*13*/ UInt8					pad13[3];
 
 	// ### HACK - shitty workaround to allow instantiation
-	virtual void					Dtor(void);
-
-	// methods
-	void							AddExtra(BSExtraData* xData);
-	void							RemoveExtra(UInt8 Type);
+	inline virtual void					Dtor(void) {}
 };
-STATIC_ASSERT(sizeof(BaseExtraList) == 0x14);
+static_assert(sizeof(BaseExtraList) == 0x20);
 
-// 14
+// 20
 class ExtraDataList : public BaseExtraList
 {
 public:
 	// no additional members
-
-	// methods
-	void							Link(TESForm* LinkedForm);
-	void							CopyList(ExtraDataList* Source);
-	BSExtraData*					GetExtraDataByType(UInt8 Type);
-
-	void							ModExtraEnableStateParent(TESObjectREFR* Parent);
-	void							ModExtraOwnership(TESForm* Owner);
-	void							ModExtraGlobal(TESGlobal* Global);
-	void							ModExtraRank(int Rank);
-	void							ModExtraCount(SInt16 Count);
-	void							ModExtraDistantData(TESObjectLAND* Land, Vector3* Position);
-	void							ModExtraCell3D(NiNode* CellNode);
 };
-STATIC_ASSERT(sizeof(ExtraDataList) == 0x14);
+static_assert(sizeof(ExtraDataList) == 0x20);

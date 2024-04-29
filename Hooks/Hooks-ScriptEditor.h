@@ -1,7 +1,7 @@
 #pragma once
 #include "Hooks-Common.h"
 
-namespace cse
+namespace gecke
 {
 	namespace hooks
 	{
@@ -10,7 +10,7 @@ namespace cse
 
 		_DeclareMemHdlr(MainWindowEntryPoint, "patches the various entry points to spawn our editor");
 		_DeclareMemHdlr(ScriptableFormEntryPoint, "");
-		_DeclareMemHdlr(ScriptEffectItemEntryPoint, "");
+		_DeclareMemHdlr(ScriptVtblEntryPoint, "");
 		_DeclareMemHdlr(ToggleScriptCompilingOriginalData, "toggles script compiling during a save callback");
 		_DeclareMemHdlr(ToggleScriptCompilingNewData, "");
 		_DeclareMemHdlr(MaxScriptSizeOverrideScriptBufferCtor, "sounds obvious enough");

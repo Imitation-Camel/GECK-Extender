@@ -1,13 +1,20 @@
 #include "MemoryHeap.h"
 
-MemoryHeap*				MemoryHeap::FormHeap = (MemoryHeap*)0x00A09E90;
+MemoryHeap*				MemoryHeap::FormHeap = (MemoryHeap*)0x00F21B5C;
 
-void* FormHeap_Allocate( UInt32 Size )
+namespace gecke_overrides
 {
-	return cdeclCall<void*>(0x00401E80, Size);
+	void* FormHeap_Allocate( UInt32 Size )
+	{
+		return cdeclCall<void*>(0x00401000, Size);
+	}
+
+	void FormHeap_Free( void* Ptr )
+	{
+		cdeclCall<void>(0x00401180, Ptr);
+	}
 }
 
-void FormHeap_Free( void* Ptr )
-{
-	cdeclCall<void>(0x00401EA0, Ptr);
-}
+// Since the NVSE source is an utterly broken mess...
+const _FormHeap_Allocate FormHeap_Allocate = (_FormHeap_Allocate)0x00401000;
+extern const _FormHeap_Free FormHeap_Free = (_FormHeap_Free)0x00401180;

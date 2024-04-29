@@ -4,17 +4,17 @@
 #pragma warning(push)
 #pragma warning(disable: 4005 4748)
 
-namespace cse
+namespace gecke
 {
 	namespace hooks
 	{
 		const UInt32						kMaxScriptDataSize = 0x8000;
 
-		_DefineHookHdlr(MainWindowEntryPoint, 0x0041A5F6);
-		_DefineHookHdlr(ScriptableFormEntryPoint, 0x004A16AD);
-		_DefineHookHdlr(ScriptEffectItemEntryPoint, 0x00566387);
-		_DefinePatchHdlrWithBuffer(ToggleScriptCompilingOriginalData, 0x00503450, 8, 0x6A, 0xFF, 0x68, 0x68, 0x13, 0x8C, 0, 0x64);
-		_DefinePatchHdlrWithBuffer(ToggleScriptCompilingNewData, 0x00503450, 8, 0xB8, 1, 0, 0, 0, 0xC2, 8, 0);
+		_DefineHookHdlr(MainWindowEntryPoint, 0x00441CA7);
+		_DefineHookHdlr(ScriptableFormEntryPoint, 0x00509F69);
+		_DefineHookHdlr(ScriptVtblEntryPoint, 0x005C50C5);
+		_DefinePatchHdlrWithBuffer(ToggleScriptCompilingOriginalData, 0x005C9800, 8, 0x6A, 0xFF, 0x68, 0x58, 0x71, 0xC9, 0, 0x64);
+		_DefinePatchHdlrWithBuffer(ToggleScriptCompilingNewData, 0x005C9800, 8, 0xB8, 1, 0, 0, 0, 0xC2, 8, 0);
 		_DefineHookHdlr(MaxScriptSizeOverrideScriptBufferCtor, 0x004FFECB);
 		_DefineHookHdlr(MaxScriptSizeOverrideParseScriptLine, 0x005031C6);
 		_DefineHookHdlr(InitializeScriptLineBufferLFLineEnds, 0x0050006A);
@@ -26,15 +26,15 @@ namespace cse
 		void PatchScriptEditorHooks(void)
 		{
 			_MemHdlr(ScriptableFormEntryPoint).WriteJump();
-			_MemHdlr(ScriptEffectItemEntryPoint).WriteJump();
+			_MemHdlr(ScriptVtblEntryPoint).WriteJump();
 			_MemHdlr(MainWindowEntryPoint).WriteJump();
-			_MemHdlr(MaxScriptSizeOverrideScriptBufferCtor).WriteJump();
+	/*		_MemHdlr(MaxScriptSizeOverrideScriptBufferCtor).WriteJump();
 			_MemHdlr(MaxScriptSizeOverrideParseScriptLine).WriteJump();
 			_MemHdlr(InitializeScriptLineBufferLFLineEnds).WriteJump();
 			_MemHdlr(ScriptCompileCheckSyntaxInvalidRef).WriteJump();
 			_MemHdlr(ScriptCompilerWriteByteCodeCheckSetExprParentheses).WriteJump();
 			_MemHdlr(ScriptCompilerParseIFExpression).WriteJump();
-			_MemHdlr(PopulateScriptComboBoxDisallowUDFs).WriteJump();
+			_MemHdlr(PopulateScriptComboBoxDisallowUDFs).WriteJump();*/
 
 			PatchCompilerErrorDetours();
 		}
@@ -51,7 +51,7 @@ namespace cse
 		#define _hhName		MainWindowEntryPoint
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x0041A610);
+			_hhSetVar(Retn, 0x00441CC1);
 			__asm
 			{
 				push	0
@@ -63,7 +63,7 @@ namespace cse
 		#define _hhName		ScriptableFormEntryPoint
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x004A16C5);
+			_hhSetVar(Retn, 0x00509F7C);
 			__asm
 			{
 				push	eax
@@ -72,10 +72,10 @@ namespace cse
 			}
 		}
 
-		#define _hhName		ScriptEffectItemEntryPoint
+		#define _hhName		ScriptVtblEntryPoint
 		_hhBegin()
 		{
-			_hhSetVar(Retn, 0x0056639F);
+			_hhSetVar(Retn, 0x005C50E1);
 			__asm
 			{
 				push	eax

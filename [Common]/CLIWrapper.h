@@ -2,7 +2,7 @@
 #include "ComponentDLLInterface.h"
 
 struct OBSEInterface;
-namespace cse
+namespace gecke
 {
 	namespace cliWrapper
 	{
@@ -14,7 +14,7 @@ namespace cse
 			extern componentDLLInterface::TagBrowserInterface*		TAG;
 		}
 
-		bool														ImportInterfaces(const OBSEInterface* obse);
+		bool														ImportInterfaces(const NVSEInterface* obse);
 		void														QueryInterfaces(void);
 	}
 }

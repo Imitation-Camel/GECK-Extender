@@ -116,38 +116,12 @@ namespace componentDLLInterface
 
 	void VariableData::FillVariableData(GameSetting* GMST)
 	{
-		const char* VariableName = GMST->editorID.c_str();
-		if (*VariableName == 's' || *VariableName == 'S')
-		{
-			Type = kType_String;
-			Value.s = GMST->value.s;
-		}
-		else if (*VariableName == 'i')
-		{
-			Type = kType_Int;
-			Value.i = GMST->value.i;
-		}
-		else if (*VariableName == 'f')
-		{
-			Type = kType_Float;
-			Value.f = GMST->value.f;
-		}
-		else
-			throw std::runtime_error("Unknown value type for GMST " + std::string(VariableName));
+		NOT_IMPLEMENTED;
 	}
 
 	void VariableData::FillVariableData(TESGlobal* Global)
 	{
-		if (Global->globalType == TESGlobal::kGlobalType_Float)
-		{
-			Type = kType_Float;
-			Value.f = Global->value;
-		}
-		else
-		{
-			Type = kType_Int;
-			Value.i = static_cast<int>(Global->value);
-		}
+		NOT_IMPLEMENTED;
 	}
 
 	VariableData::VariableData() : FormData()
@@ -278,8 +252,9 @@ namespace componentDLLInterface
 		CommandTableEnd = nullptr;
 		GetCommandReturnType = nullptr;
 		GetParentPlugin = nullptr;
-		GetRequiredOBSEVersion = nullptr;
+		GetRequiredNVSEVersion = nullptr;
 		DeveloperURLDataListHead = nullptr;
+		DeveloperURLDataListCount = 0;
 	}
 
 	CommandTableData::~CommandTableData()

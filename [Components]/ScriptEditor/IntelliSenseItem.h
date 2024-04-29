@@ -123,8 +123,8 @@ protected:
 	static enum class eSourceType
 	{
 		Vanilla = 0,
-		OBSE,
-		OBSEPlugin
+		NVSE,
+		NVSEPlugin
 	};
 
 	static array<String^>^ ReturnValueTypeID =

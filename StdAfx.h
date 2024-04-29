@@ -108,11 +108,11 @@ using namespace SME::INI;
 using namespace SME::Functors;
 using namespace SME::MemoryHandler;
 
-// OBSE
-#include "obse_common\obse_version.h"
-#include "obse\PluginAPI.h"
-#include "obse\GameTypes.h"
-#include "obse\Utilities.h"
+// NVSE
+#include "nvse\containers.h"
+#include "nvse\PluginAPI.h"
+#include "nvse\NiTypes.h"
+#include "nvse\GameTypes.h"
 
 // BGSEEBASE
 #include "[BGSEEBase]\Main.h"
@@ -121,7 +121,7 @@ using namespace SME::MemoryHandler;
 #include "[BGSEEBase]\HookUtil.h"
 
 
-// CSE
+// GECKE
 #include "Main.h"
 #include "EditorAPI\TESEditorAPI.h"
 #include "Settings.h"
@@ -132,12 +132,18 @@ using namespace SME::MemoryHandler;
 #define PI						3.151592653589793
 
 #undef SME_ASSERT
-#define SME_ASSERT(_Expression) (void)( (!!(_Expression)) || (BGSEECONSOLE->LogAssertion("CSE", "ASSERTION FAILED (%s, %d): %s", __FILE__, __LINE__, #_Expression), _wassert(_CRT_WIDE(#_Expression), _CRT_WIDE(__FILE__), __LINE__), 0) )
+#define SME_ASSERT(_Expression) (void)( (!!(_Expression)) || (BGSEECONSOLE->LogAssertion("GECKE", "ASSERTION FAILED (%s, %d): %s", __FILE__, __LINE__, #_Expression), _wassert(_CRT_WIDE(#_Expression), _CRT_WIDE(__FILE__), __LINE__), 0) )
 
 
 // required for assertions in d'tors (for static instances) as we don't want it to trigger the crash handler recursively
 #ifdef NDEBUG
-#define DEBUG_ASSERT(_Expression)		(void)( (!!(_Expression)) || (BGSEECONSOLE->LogAssertion("CSE", "ASSERTION FAILED (%s, %d): %s", __FILE__, __LINE__, #_Expression), 0) )
+#define DEBUG_ASSERT(_Expression)		(void)( (!!(_Expression)) || (BGSEECONSOLE->LogAssertion("GECKE", "ASSERTION FAILED (%s, %d): %s", __FILE__, __LINE__, #_Expression), 0) )
 #else
 #define DEBUG_ASSERT(expr)		SME_ASSERT(expr)
 #endif
+
+#define NOT_IMPLEMENTED  { 			\
+BGSEEUI->MsgBoxE(nullptr, MB_TASKMODAL|MB_TOPMOST|MB_SETFOREGROUND|MB_OK, \
+"You did something that invoked code that has yet to be implemented/ported over from the CSE.\n\nFile: %s\nLine: %s\n\nThe editor will crash now...", __FILE__, __LINE__); \
+throw std::runtime_error("Not implemented yet"); \
+}

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "TESForm.h"
-#include "TESQuest.h"
 #include "TESDialog.h"
 
 //	EditorAPI: ExtraData class and its derivatives.
@@ -26,6 +25,8 @@ class	NiAVObject;
 class	ExtraDataList;
 class	Subwindow;
 class	TESPreviewControl;
+
+// TODO: Check and port to the GECK
 
 // 0C
 class BSExtraData
@@ -250,20 +251,6 @@ public:
 	/*10*/ int						previewControlID;
 };
 STATIC_ASSERT(sizeof(DialogExtraPreviewControl) == 0x14);
-
-// 20
-class DialogExtraQuestStageData : public BSExtraData
-{
-public:
-	// members
-	//     /*00*/ BSExtraData
-	/*0C*/ TESQuest::StageData*						selectedStage;
-	/*10*/ TESQuest::StageData::QuestStageItem*		selectedStageItem;
-	/*14*/ UInt32									unk14;
-	/*18*/ Subwindow*								conditionItemsSubwindow;
-	/*1C*/ SInt32									unk1C;
-};
-STATIC_ASSERT(sizeof(DialogExtraQuestStageData) == 0x20);
 
 // 14
 class DialogExtraRefSelectControl : public BSExtraData

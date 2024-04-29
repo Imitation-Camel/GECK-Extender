@@ -1,7 +1,7 @@
 #pragma once
 #include "[Common]\ComponentDLLInterface.h"
 
-namespace cse
+namespace gecke
 {
 	extern bool								shadeMeMode;
 	extern bool								IsWarholAGenius;
@@ -18,9 +18,9 @@ namespace cse
 
 	class InitCallbackQuery : public bgsee::DaemonCallback
 	{
-		const OBSEInterface*				OBSE;
+		const NVSEInterface*				NVSE;
 	public:
-		InitCallbackQuery(const OBSEInterface* OBSE);
+		InitCallbackQuery(const NVSEInterface* NVSE);
 		virtual ~InitCallbackQuery();
 
 		virtual bool						Handle(void* Parameter = nullptr);
@@ -28,9 +28,9 @@ namespace cse
 
 	class InitCallbackLoad : public bgsee::DaemonCallback
 	{
-		const OBSEInterface*				OBSE;
+		const NVSEInterface*				NVSE;
 	public:
-		InitCallbackLoad(const OBSEInterface* OBSE);
+		InitCallbackLoad(const NVSEInterface* NVSE);
 		virtual ~InitCallbackLoad();
 
 		virtual bool						Handle(void* Parameter = nullptr);
@@ -83,27 +83,27 @@ namespace cse
 		static void							LoadStartupScript();
 	};
 
-	void CSEInteropHandler(OBSEMessagingInterface::Message* Msg);
-	void OBSEMessageHandler(OBSEMessagingInterface::Message* Msg);
+	void GECKSEInteropHandler(NVSEMessagingInterface::Message* Msg);
+	void NVSEMessageHandler(NVSEMessagingInterface::Message* Msg);
 
-#define BGSEEMAIN_EXTENDERLONGNAME		"Construction Set Extender"
-#define BGSEEMAIN_EXTENDERSHORTNAME		"CSE"
+#define BGSEEMAIN_EXTENDERLONGNAME		"GECK Extender"
+#define BGSEEMAIN_EXTENDERSHORTNAME		"GECKE"
 
 // bgsee::ResourceLocation paths
-#define CSE_CODADEPOT					"Coda\\"
-#define CSE_CODABGDEPOT					"Coda\\Background\\"
-#define CSE_SEDEPOT						"Script Editor\\"
-#define CSE_SEPREPROCDEPOT				"Script Editor\\Preprocessor\\"
-#define CSE_SEPREPROCSTDDEPOT			"Script Editor\\Preprocessor\\STD\\"
-#define CSE_SESNIPPETDEPOT				"Script Editor\\Snippets\\"
-#define CSE_SEAUTORECDEPOT				"Script Editor\\Auto-Recovery Cache\\"
-#define CSE_OPALDEPOT					"OPAL\\"
-#define CSE_PREFABDEPOT					"Object Prefabs\\"
-#define CSE_COSAVEDEPOT					"Plugin Cosaves\\"
+#define GECKE_CODADEPOT					"Coda\\"
+#define GECKE_CODABGDEPOT				"Coda\\Background\\"
+#define GECKE_SEDEPOT					"Script Editor\\"
+#define GECKE_SEPREPROCDEPOT			"Script Editor\\Preprocessor\\"
+#define GECKE_SEPREPROCSTDDEPOT			"Script Editor\\Preprocessor\\STD\\"
+#define GECKE_SESNIPPETDEPOT			"Script Editor\\Snippets\\"
+#define GECKE_SEAUTORECDEPOT			"Script Editor\\Auto-Recovery Cache\\"
+#define GECKE_OPALDEPOT					"OPAL\\"
+#define GECKE_PREFABDEPOT				"Object Prefabs\\"
+#define GECKE_COSAVEDEPOT				"Plugin Cosaves\\"
 }
 
 extern "C"
 {
-	__declspec(dllexport) bool OBSEPlugin_Query(const OBSEInterface * obse, PluginInfo * info);
-	__declspec(dllexport) bool OBSEPlugin_Load(const OBSEInterface * obse);
+	__declspec(dllexport) bool NVSEPlugin_Query(const NVSEInterface * nvse, PluginInfo * info);
+	__declspec(dllexport) bool NVSEPlugin_Load(const NVSEInterface * nvse);
 };

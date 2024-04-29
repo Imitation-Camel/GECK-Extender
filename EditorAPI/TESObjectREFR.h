@@ -1,9 +1,8 @@
 #pragma once
 
-#include "obse\NiNodes.h"
+#include "nvse\NiNodes.h"
 
 #include "TESForm.h"
-#include "TESObjectCELL.h"
 #include "ExtraDataList.h"
 
 //	EditorAPI: TESObjectREFR class.
@@ -15,8 +14,8 @@
 	Refs store local data like position, size, flags, etc.
 */
 
-// 60
-class TESObjectREFR : public TESForm, public TESChildCell, public TESMemContextForm
+// 84
+class TESObjectREFR : public TESForm //, public TESChildCell, public TESMemContextForm TODO: fix hierarchy
 {
 public:
 	enum
@@ -35,54 +34,20 @@ public:
 	//     /*00*/ TESForm
 	//     /*24*/ TESChildCell
 	//     /*28*/ TESMemContextForm - empty, no members
-	/*28*/ TESForm*				baseForm;
-	/*2C*/ Vector3				rotation;
-	/*38*/ Vector3				position;
-	/*44*/ float				scale;
-	/*48*/ TESObjectCELL*		parentCell;
-	/*4C*/ ExtraDataList		extraData;
-
-	// methods
-	NiNode*						GetNiNode(void);
-	void						SetNiNode(NiNode* Node);
-	NiNode*						GenerateNiNode();
-	void						UpdateNiNode();
-	const Vector3*				GetPosition() const;
-	const Vector3*				GetRotation() const;
-	bool						SetBaseForm(TESForm* BaseForm);
-	void						SetPersistent(bool Persistent);
-
-	void						ChangeCell(TESObjectCELL* Cell);
-	void						Floor();
-	void						Delete();
-
-	void						SetPosition(float X, float Y, float Z);
-	void						SetPosition(const Vector3& Pos);
-	void						SetRotation(float X, float Y, float Z, bool Radians = false);
-	void						SetRotation(const Vector3& Rot, bool Radians = false);
-	void						SetScale(float Scale);
-
-	UInt8						GetSoulLevel() const;
-	void						ModExtraCount(SInt16 Count);
-	void						ModExtraHealth(float Health);
-	void						ModExtraCharge(float Charge);
-	void						ModExtraTimeLeft(float Time);
-	void						ModExtraSoul(UInt8 SoulLevel);
-	void						SetExtraEnableStateParentOppositeState(bool State);
-	void						RemoveExtraTeleport(void);
-
-	void						ToggleInvisiblity(void);
-	void						ToggleChildrenInvisibility(void);
-	void						ToggleSelectionBox(bool State);
-	void						SetInvisible(bool State);
-	void						SetFrozen(bool State);
-	void						SetAlpha(float Alpha = -1.0f);		// pass -1.0f to reset alpha
-
-	bool						IsInvisible(void) const;
-	bool						IsChildrenInvisible(void) const;
-	bool						IsFrozen(void) const;
-	float						GetAlpha(void);
+	/*28*/ UInt32				unk28;
+	/*2C*/ void*				childCell;
+	/*30*/ UInt32				unk30;;
+	/*34*/ TESForm*				baseForm;
+	/*38*/ Vector3				rotation;
+	/*44*/ Vector3				position;
+	/*50*/ float				scale;
+	/*54*/ TESObjectCELL*		parentCell;
+	/*58*/ ExtraDataList		extraData;
+	/*78*/ UInt32				unk78;
+	/*7C*/ float				unk7C;
+	/*80*/ void*				unk80;
 };
+static_assert(sizeof(TESObjectREFR) == 0x84);
 
 typedef std::vector<TESObjectREFR*>	TESObjectREFRArrayT;
 

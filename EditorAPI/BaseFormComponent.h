@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BSString.h"
-#include "Archive.h"
 
 //	EditorAPI: BaseFormComponent class and its derivatives.
 //	A number of class definitions are directly derived from the COEF API; Credit to JRoush for his comprehensive decoding
@@ -97,22 +96,11 @@ public:
 STATIC_ASSERT(sizeof(TESIconTree) == 0x18);
 
 
-// C
-struct FULL_HASH
-{
-	/*00*/ BSFilePathHash* filenameDdsHash;
-	/*04*/ BSFilePathHash* filenameDdxHash;	// @Ian: DDX files are a bethesda custom dds-like format designed for consoles.
-											// On the 360 it uses xmemcodec for compression and stores each mipmap in pre-tiled (reorganized for better access by the gpu) format.
-											// The mips are also split in to two separate compressed blocks, the first one for the smaller mips and the second for the larger (much better for streaming)
-	/*08*/ BSFilePathHash* folderHash;
-};
-STATIC_ASSERT(sizeof(FULL_HASH) == 0xC);
-
 // 24
 class TESModel : public BaseFormComponent
 {
 public:
-	typedef NiTListBase<FULL_HASH*> ModelTextureHashList;  // probably a named class, but without it's own vtbl or RTTI info
+	typedef NiTListBase<void*> ModelTextureHashList;  // probably a named class, but without it's own vtbl or RTTI info
 
 	// members
 	//     /*00*/ void**            vtbl;

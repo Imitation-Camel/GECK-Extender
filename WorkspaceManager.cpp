@@ -1,8 +1,7 @@
 #include "WorkspaceManager.h"
-#include "Hooks\Hooks-Plugins.h"
 #include "Main.h"
 
-namespace cse
+namespace gecke
 {
 	namespace workspaceManager
 	{
@@ -13,33 +12,12 @@ namespace cse
 
 		void WorkspaceManagerOperator::ResetCurrentWorkspace()
 		{
-			hooks::_MemHdlr(AutoLoadActivePluginOnStartup).WriteJump();
-
-			for (tList<TESFile>::Iterator Itr = _DATAHANDLER->fileList.Begin(); Itr.End() == false && Itr.Get(); ++Itr)
-			{
-				Itr.Get()->SetActive(false);
-				Itr.Get()->SetLoaded(false);
-			}
-
-			SendMessage(BGSEEUI->GetMainWindow(), WM_COMMAND, TESCSMain::kToolbar_DataFiles, 0);
-
-			hooks::_MemHdlr(AutoLoadActivePluginOnStartup).WriteBuffer();
+			NOT_IMPLEMENTED;
 		}
 
 		void WorkspaceManagerOperator::ReloadPlugins( const char* WorkspacePath, bool ResetPluginList, bool LoadESPs )
 		{
-			if (ResetPluginList)
-				_DATAHANDLER->ClearPluginArray();
-
-			_DefinePatchHdlr(DataHandlerPopulateModList, 0x0047E708 + 2);
-
-			if (LoadESPs == false)
-				_MemHdlr(DataHandlerPopulateModList).WriteUInt8(1);
-
-			_DATAHANDLER->PopulatePluginArray(WorkspacePath);
-
-			if (LoadESPs == false)
-				_MemHdlr(DataHandlerPopulateModList).WriteUInt8(2);
+			NOT_IMPLEMENTED;
 		}
 
 		void Initialize()
@@ -59,22 +37,22 @@ namespace cse
 				kDefaultDirectories.push_back("Data\\Backup\\");
 
 				kDefaultDirectories.push_back(bgsee::ResourceLocation::GetBasePath());
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_CODADEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_CODABGDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_SEDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_SEPREPROCDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_SEPREPROCSTDDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_SESNIPPETDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_SEAUTORECDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_OPALDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_PREFABDEPOT)()));
-				kDefaultDirectories.push_back((bgsee::ResourceLocation(CSE_COSAVEDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_CODADEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_CODABGDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_SEDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_SEPREPROCDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_SEPREPROCSTDDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_SESNIPPETDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_SEAUTORECDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_OPALDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_PREFABDEPOT)()));
+				kDefaultDirectories.push_back((bgsee::ResourceLocation(GECKE_COSAVEDEPOT)()));
 			}
 
 			bool ComponentInitialized = bgsee::WorkspaceManager::Initialize(BGSEEMAIN->GetAPPPath(), new WorkspaceManagerOperator(), kDefaultDirectories);
 			SME_ASSERT(ComponentInitialized);
 
-			_FILEFINDER->AddSearchPath((std::string(std::string(BGSEEWORKSPACE->GetCurrentWorkspace()) + "Data")).c_str());
+			// _FILEFINDER->AddSearchPath((std::string(std::string(BGSEEWORKSPACE->GetCurrentWorkspace()) + "Data")).c_str());
 
 		}
 
