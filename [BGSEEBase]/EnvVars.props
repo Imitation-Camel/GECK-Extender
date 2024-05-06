@@ -2,12 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <CrashRptIncludePath>C:\Users\shadeMe\Documents\VC++ LIB\CrashRpt\include</CrashRptIncludePath>
-    <CrashRptLibPath>C:\Users\shadeMe\Documents\VC++ LIB\CrashRpt\lib</CrashRptLibPath>
-    <DirectXIncludePath>C:\Users\shadeMe\Documents\VC++ LIB\DirectX\Include</DirectXIncludePath>
-    <DirectXLibPath>C:\Users\shadeMe\Documents\VC++ LIB\DirectX\Lib\x86</DirectXLibPath>
-    <SMESundriesIncludePath>C:\Users\shadeMe\Documents\BGS Dev\Code\Libraries\SME Sundries</SMESundriesIncludePath>
-    <XSECommonIncludePath>C:\Users\shadeMe\Documents\BGS Dev\Code\Libraries\xSE Common</XSECommonIncludePath>
+    <CrashRptIncludePath>$(USERPROFILE)\Documents\VC++ LIB\CrashRpt\include</CrashRptIncludePath>
+    <CrashRptLibPath>$(USERPROFILE)\Documents\VC++ LIB\CrashRpt\lib</CrashRptLibPath>
+    <DirectXIncludePath>$(USERPROFILE)\Documents\VC++ LIB\DirectX\Include</DirectXIncludePath>
+    <DirectXLibPath>$(USERPROFILE)\Documents\VC++ LIB\DirectX\Lib\x86</DirectXLibPath>
+    <SMESundriesIncludePath>$(USERPROFILE)\Documents\BGS Dev\Code\Libraries\SME Sundries</SMESundriesIncludePath>
+    <XSECommonIncludePath>$(USERPROFILE)\Documents\BGS Dev\Code\Libraries\xSE Common</XSECommonIncludePath>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

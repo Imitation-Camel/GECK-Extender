@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[2. External Dependencies]"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[1. Playground]", "[1. Playground]", "{4399FDB7-9112-4CDF-A4C5-0FA1BBAC464D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "[xSE Common]", "..\..\Libraries\xSE Common\common_vc9.vcxproj", "{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "[xSE Common]", "%XSECommonIncludePath%\common_vc9.vcxproj", "{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
