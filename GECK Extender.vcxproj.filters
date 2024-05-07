@@ -301,7 +301,7 @@
     <ResourceCompile Include="[BGSEEBase]\BGSEditorExtenderBase.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="..\..\Libraries\SME Sundries\INIEditGUI_Res.rc">
+    <ResourceCompile Include="$(SMESundriesIncludePath)\INIEditGUI_Res.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
   </ItemGroup>
